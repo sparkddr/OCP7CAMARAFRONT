@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import AuthContext from "../../store/auth-context";
 
 const AuthContainer = styled.div`
   width: 330px;
@@ -51,6 +52,8 @@ const AuthForm = () => {
   const firstNameInputRef = useRef();
   const roleInputRef = useRef();
 
+  const authCtx = useContext(AuthContext);
+
   const [haveAccount, setHaveAccount] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -88,7 +91,7 @@ const AuthForm = () => {
           }
         })
         .then((data) => {
-          console.log(data);
+          authCtx.login(data.token);
         })
         .catch((err) => {
           alert(err.message);
