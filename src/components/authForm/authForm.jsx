@@ -52,19 +52,52 @@ const AuthForm = () => {
   const roleInputRef = useRef();
 
   const [haveAccount, setHaveAccount] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = (event) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    const enteredFirstName = firstNameInputRef.current.value;
-    const enteredLastName = lastNameInputRef.current.value;
-    const enteredRole = roleInputRef.current.value;
 
     //ADD VALIDATION
-
+    setIsLoading(true);
     if (haveAccount) {
+      fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          setIsLoading(false);
+          if (res.ok) {
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              let errorMessage = "L'authentification a échouée";
+              if (data && data.message) {
+                errorMessage = data.message;
+              }
+
+              throw new Error(errorMessage);
+            });
+          }
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     } else {
+      const enteredFirstName = firstNameInputRef.current.value;
+      const enteredLastName = lastNameInputRef.current.value;
+      const enteredRole = roleInputRef.current.value;
+
       fetch("http://localhost:8000/api/signup", {
         method: "POST",
         body: JSON.stringify({
@@ -78,10 +111,15 @@ const AuthForm = () => {
           "Content-Type": "application/json",
         },
       }).then((res) => {
+        setIsLoading(false);
         if (res.ok) {
         } else {
           return res.json().then((data) => {
-            console.log(data);
+            let errorMessage = "La création de compte a échouée";
+            if (data && data.message) {
+              errorMessage = data.message;
+            }
+            alert(errorMessage);
           });
         }
       });
@@ -127,7 +165,11 @@ const AuthForm = () => {
             ref={passwordInputRef}
           />
         </InputDiv>
-        <Submit>{haveAccount ? "Connexion" : "S'enregistrer"} </Submit>
+        {isLoading ? (
+          <p>Demande en cours....</p>
+        ) : (
+          <Submit>{haveAccount ? "Connexion" : "S'enregistrer"} </Submit>
+        )}
       </form>
       <SwitchMod onClick={switchAuthMod}>
         {haveAccount
