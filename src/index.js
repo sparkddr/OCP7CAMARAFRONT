@@ -7,8 +7,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContextProvider } from "./store/auth-context";
 
 import Header from "./components/header/header";
-import Post from "./components/post/post";
+import PostPage from "./pages/posts/postPage";
 import AuthPage from "./pages/authPage";
+import ProfilePage from "./pages/profilePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,8 +18,9 @@ root.render(
       <Router>
         <Header />
         <Routes>
-          <Route path="/posts" element={<Post />} />
+          <Route path="/posts" element={<PostPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </Router>
     </AuthContextProvider>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import colors from "../../utils/colors";
 
 function Post() {
   const [data, setData] = useState([]);
@@ -19,17 +20,17 @@ function Post() {
   }, []);
 
   const StyledContainer = styled.div`
-    width: 60%;
     margin: auto;
+    width: 538px;
   `;
 
   const PostContainer = styled.div`
-    background-color: #E1D89F;
+    background-color: ${colors.secondary};
     border-radius: 20px;
-    width 50%;
-    text-align : center;
+    margin-bottom: 40px;
+    text-align: center;
     margin: 30px auto;
-    padding : 20px;
+    padding: 20px;
     height: 200px;
   `;
 

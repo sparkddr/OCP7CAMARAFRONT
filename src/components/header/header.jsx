@@ -4,19 +4,21 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 
+import colors from "../../utils/colors";
+
 const StyledNav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 150px;
+  height: 105px;
+  background-color: ${colors.primary};
 `;
 const StyledLogo = styled.img`
-  height: 80px;
-
+  height: 60px;
   margin-left: 60px;
 `;
 
-const StyledLink = styled.ul`
+const StyledList = styled.ul`
   display: flex;
   font-size: 25px;
   width: 50%;
@@ -24,7 +26,14 @@ const StyledLink = styled.ul`
   align-items: center;
   li {
     list-style: none;
+    color: white;
   }
+`;
+const StyledLink = styled(Link)`
+  all: unset;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
 `;
 
 function Header() {
@@ -37,23 +46,25 @@ function Header() {
       <div>
         <StyledLogo src={logo} alt="logo" />
       </div>
-      <StyledLink>
+      <StyledList>
         {!isLoggedIn && (
           <li>
-            <Link to="/auth">Se connecter</Link>
+            <StyledLink to="/auth">Se connecter</StyledLink>
           </li>
         )}
         {isLoggedIn && (
           <li>
-            <Link to="/profil">Mon Profil</Link>
+            <StyledLink to="/profile">Mon Profil</StyledLink>
           </li>
         )}
         {isLoggedIn && (
           <li>
-            <Link to="/profil">Se déconnecter</Link>
+            <StyledLink to="/auth" onClick={authCtx.logout}>
+              Se déconnecter
+            </StyledLink>
           </li>
         )}
-      </StyledLink>
+      </StyledList>
     </StyledNav>
   );
 }

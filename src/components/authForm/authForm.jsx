@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 
 const AuthContainer = styled.div`
   width: 330px;
   background-color: #2d728f;
   border-radius: 20px;
-  margin: auto;
+  margin: 30px auto 0px auto;
   padding: 30px;
   text-align: center;
   color: white;
@@ -46,6 +47,8 @@ const SwitchMod = styled.p`
 `;
 
 const AuthForm = () => {
+  const navigate = useNavigate();
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const lastNameInputRef = useRef();
@@ -91,11 +94,10 @@ const AuthForm = () => {
           }
         })
         .then((data) => {
-          authCtx.login(data.token);
+          authCtx.login(data.token, data.data.id);
+          navigate("/posts");
         })
-        .catch((err) => {
-          alert(err.message);
-        });
+        .catch((err) => {});
     } else {
       const enteredFirstName = firstNameInputRef.current.value;
       const enteredLastName = lastNameInputRef.current.value;
