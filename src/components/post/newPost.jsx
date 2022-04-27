@@ -1,4 +1,6 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import AuthContext from "../../store/auth-context";
+
 import styled from "styled-components";
 import colors from "../../utils/colors";
 import userIcon from "../../assets/user_icon_color.png";
@@ -42,6 +44,7 @@ const Container = styled.div`
 
 const NewPost = () => {
   const postInputRef = useRef();
+  const authCtx = useContext(AuthContext);
 
   const sendPost = (event) => {
     const enteredPost = postInputRef.current.value;
@@ -50,7 +53,7 @@ const NewPost = () => {
     fetch("http://localhost:8000/api/posts", {
       method: "POST",
       body: JSON.stringify({
-        userId: 1,
+        userId: authCtx.userId,
         message: enteredPost,
       }),
       headers: {

@@ -59,6 +59,11 @@ function Header() {
         )}
         {isLoggedIn && (
           <li>
+            <StyledLink to="/posts">Fil d'Actualité</StyledLink>
+          </li>
+        )}
+        {isLoggedIn && (
+          <li>
             <StyledLink to="/auth" onClick={authCtx.logout}>
               Se déconnecter
             </StyledLink>
