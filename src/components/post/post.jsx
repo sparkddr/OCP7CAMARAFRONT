@@ -8,6 +8,8 @@ import heartEmpty from "../../assets/icons/heart-regular.svg";
 import heartFull from "../../assets/icons/heart-solid.svg";
 import AuthContext from "../../store/auth-context";
 
+import CommentModule from "../comment/commentModule";
+
 const PostContainer = styled.div`
   background-color: ${colors.secondary};
   border-radius: 20px;
@@ -46,6 +48,9 @@ const BottomPost = styled.div`
       margin-left: 10px;
     }
   }
+  & .comments {
+    cursor: pointer;
+  }
 `;
 
 const Post = ({ message, date, postId, userId }) => {
@@ -57,6 +62,8 @@ const Post = ({ message, date, postId, userId }) => {
 
   const [dataUser, setDataUser] = useState([]);
   const [isUserLoading, setUserLoading] = useState(true);
+
+  const [showComments, setShowComments] = useState(false);
 
   const urlUser = `http://localhost:8000/api/users/${userId}`;
   const urlLikes = `http://localhost:8000/api/likes/post/${postId}`;
@@ -149,7 +156,6 @@ const Post = ({ message, date, postId, userId }) => {
             const like = result.data.find(
               (like) => like.userId === authCtx.userId
             );
-            console.log(like);
             if (like) {
               setLikeState(true);
               setLikeId(like.id);
@@ -164,6 +170,10 @@ const Post = ({ message, date, postId, userId }) => {
     };
     getLikes();
   });
+
+  const handleComments = () => {
+    showComments ? setShowComments(false) : setShowComments(true);
+  };
 
   return (
     <PostContainer>
@@ -192,8 +202,11 @@ const Post = ({ message, date, postId, userId }) => {
           )}
           <p>{likeNum}</p>
         </div>
-        <p> 33 Commentaires</p>
+        <p className="comments" onClick={handleComments}>
+          33 Commentaires
+        </p>
       </BottomPost>
+      {showComments && <CommentModule postId={postId}></CommentModule>}
     </PostContainer>
   );
 };
