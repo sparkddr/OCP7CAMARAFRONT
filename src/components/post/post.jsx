@@ -53,7 +53,7 @@ const BottomPost = styled.div`
   }
 `;
 
-const Post = ({ message, date, postId, userId }) => {
+const Post = ({ message, date, postId, userId, comments }) => {
   const authCtx = useContext(AuthContext);
 
   const [likeState, setLikeState] = useState(false);
@@ -203,7 +203,7 @@ const Post = ({ message, date, postId, userId }) => {
           <p>{likeNum}</p>
         </div>
         <p className="comments" onClick={handleComments}>
-          33 Commentaires
+          {comments} Commentaires
         </p>
       </BottomPost>
       {showComments && <CommentModule postId={postId}></CommentModule>}

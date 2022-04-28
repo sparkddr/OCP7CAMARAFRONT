@@ -51,6 +51,7 @@ const PostPage = () => {
             userId={post.userId ? post.userId : 4}
             postId={post.id}
             date={post.createdAt}
+            comments={post.comments.length}
           />
         ))
       )}
