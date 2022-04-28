@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../../utils/colors";
 import userIcon from "../../assets/user_icon_color.png";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import heartEmpty from "../../assets/icons/heart-regular.svg";
 import heartFull from "../../assets/icons/heart-solid.svg";
@@ -48,10 +48,18 @@ const BottomPost = styled.div`
   }
 `;
 
-const Post = ({ message, firstname, lastname, date, postId }) => {
+const Post = ({ message, date, postId, userId }) => {
   const authCtx = useContext(AuthContext);
+
   const [likeState, setLikeState] = useState(false);
   const [likeId, setLikeId] = useState();
+  const [likeNum, setLikeNum] = useState();
+
+  const [dataUser, setDataUser] = useState([]);
+  const [isUserLoading, setUserLoading] = useState(true);
+
+  const urlUser = `http://localhost:8000/api/users/${userId}`;
+  const urlLikes = `http://localhost:8000/api/likes/post/${postId}`;
 
   const likeHandler = () => {
     fetch("http://localhost:8000/api/likes", {
@@ -80,7 +88,6 @@ const Post = ({ message, firstname, lastname, date, postId }) => {
       .then((data) => {
         setLikeState(true);
         setLikeId(data.data.id);
-        console.log(data);
       })
       .catch((err) => {});
   };
@@ -103,24 +110,78 @@ const Post = ({ message, firstname, lastname, date, postId }) => {
       })
       .then((data) => {
         setLikeState(false);
-        console.log(data);
       })
       .catch((err) => {});
   };
 
+  useEffect(() => {
+    const getUsers = () => {
+      fetch(urlUser, {
+        headers: {
+          Authorization: `Bearer ${authCtx.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setDataUser(result.data);
+            setUserLoading(false);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    };
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    const getLikes = () => {
+      fetch(urlLikes, {
+        headers: {
+          Authorization: `Bearer ${authCtx.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setLikeNum(result.data.length);
+            const like = result.data.find(
+              (like) => like.userId === authCtx.userId
+            );
+            console.log(like);
+            if (like) {
+              setLikeState(true);
+              setLikeId(like.id);
+            } else {
+              setLikeState(false);
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    };
+    getLikes();
+  });
+
   return (
     <PostContainer>
-      <UserDiv>
-        <img src={userIcon} alt="icone utilisateur" />
-        <div>
-          <h2>
-            {lastname} {firstname}
-          </h2>
-          <h3>
-            Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
-          </h3>
-        </div>
-      </UserDiv>
+      {isUserLoading ? (
+        <div></div>
+      ) : (
+        <UserDiv>
+          <img src={userIcon} alt="icone utilisateur" />
+          <div>
+            <h2>
+              {dataUser.lastname} {dataUser.firstname}
+            </h2>
+            <h3>
+              Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
+            </h3>
+          </div>
+        </UserDiv>
+      )}
       <p>{message}</p>
       <BottomPost>
         <div>
@@ -129,7 +190,7 @@ const Post = ({ message, firstname, lastname, date, postId }) => {
           ) : (
             <img src={heartEmpty} alt="like" onClick={likeHandler} />
           )}
-          <p>18</p>
+          <p>{likeNum}</p>
         </div>
         <p> 33 Commentaires</p>
       </BottomPost>
