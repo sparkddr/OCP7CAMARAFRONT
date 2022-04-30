@@ -44,14 +44,14 @@ const CommentModel = styled.div`
 `;
 
 const Comment = ({ message, user }) => {
-  const [dataComment, setDataComment] = useState();
+  const [dataUser, setDataUser] = useState();
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user}`)
       .then((res) => res.json())
       .then((data) => {
-        setDataComment(data.data);
+        setDataUser(data.data);
         setisLoading(false);
       });
   }, []);
@@ -64,7 +64,7 @@ const Comment = ({ message, user }) => {
       ) : (
         <div>
           <h4>
-            {dataComment.lastname} {dataComment.firstname}
+            {dataUser.lastname} {dataUser.firstname}
           </h4>
           <p>{message}</p>
         </div>

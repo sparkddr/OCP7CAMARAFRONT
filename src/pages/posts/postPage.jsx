@@ -40,7 +40,7 @@ const PostPage = () => {
 
   return (
     <StyledContainer>
-      <NewPost />
+      <NewPost dataPost={dataPost} setDataPost={setDataPost} />
       {isPostLoading ? (
         <div>Load</div>
       ) : (
@@ -51,7 +51,7 @@ const PostPage = () => {
             userId={post.userId ? post.userId : 4}
             postId={post.id}
             date={post.createdAt}
-            comments={post.comments.length}
+            comments={post.comments && post.comments.length}
           />
         ))
       )}

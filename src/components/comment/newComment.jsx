@@ -38,7 +38,13 @@ const NComment = styled.div`
   }
 `;
 
-const NewComment = ({ postId }) => {
+const NewComment = ({
+  postId,
+  setCommentNumber,
+  commentNumber,
+  dataComment,
+  setDataComment,
+}) => {
   const authCtx = useContext(AuthContext);
   const commentInputRef = useRef();
 
@@ -57,7 +63,17 @@ const NewComment = ({ postId }) => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    })
+      .then(() => {
+        setCommentNumber(commentNumber + 1);
+        setDataComment([
+          ...dataComment,
+          { userId: authCtx.userId, postId: postId, message: enteredComment },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

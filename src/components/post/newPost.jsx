@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect, useState } from "react";
 import AuthContext from "../../store/auth-context";
 
 import styled from "styled-components";
@@ -42,9 +42,24 @@ const Container = styled.div`
   }
 `;
 
-const NewPost = () => {
+const NewPost = ({ dataPost, setDataPost }) => {
   const postInputRef = useRef();
   const authCtx = useContext(AuthContext);
+
+  const [dataUser, setDataUser] = useState({});
+  const [isDataLoading, setIsDataLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setDataUser(data.data);
+        setIsDataLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const sendPost = (event) => {
     const enteredPost = postInputRef.current.value;
@@ -74,15 +89,24 @@ const NewPost = () => {
         }
       })
       .then((data) => {
-        console.log(data);
+        setDataPost([data.data, ...dataPost]);
+        console.log(dataPost);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  return (
+  return isDataLoading ? (
+    <div></div>
+  ) : (
     <Container>
       <img src={userIcon} alt="icone utilisateur" />
       <form onSubmit={sendPost}>
-        <input type="text" defaultValue="What's up Name?" ref={postInputRef} />
+        <input
+          type="text"
+          defaultValue={"What's up " + dataUser.firstname + "?"}
+          ref={postInputRef}
+        />
         <button type="submit"> Envoyer</button>
       </form>
     </Container>

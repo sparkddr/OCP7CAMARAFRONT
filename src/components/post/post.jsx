@@ -63,6 +63,7 @@ const Post = ({ message, date, postId, userId, comments }) => {
   const [dataUser, setDataUser] = useState([]);
   const [isUserLoading, setUserLoading] = useState(true);
 
+  const [commentNumber, setCommentNumber] = useState(comments);
   const [showComments, setShowComments] = useState(false);
 
   const urlUser = `http://localhost:8000/api/users/${userId}`;
@@ -203,10 +204,16 @@ const Post = ({ message, date, postId, userId, comments }) => {
           <p>{likeNum}</p>
         </div>
         <p className="comments" onClick={handleComments}>
-          {comments} Commentaires
+          {commentNumber} Commentaires
         </p>
       </BottomPost>
-      {showComments && <CommentModule postId={postId}></CommentModule>}
+      {showComments && (
+        <CommentModule
+          postId={postId}
+          commentNumber={commentNumber}
+          setCommentNumber={setCommentNumber}
+        ></CommentModule>
+      )}
     </PostContainer>
   );
 };

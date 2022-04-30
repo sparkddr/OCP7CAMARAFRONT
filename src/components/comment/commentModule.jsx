@@ -13,9 +13,10 @@ const CommentContainer = styled.div`
   padding-bottom: 15px;
 `;
 
-function CommentModule({ postId }) {
-  const [dataComment, setDataComment] = useState([]);
+function CommentModule({ postId, commentNumber, setCommentNumber }) {
   const url = `http://localhost:8000/api/comments?postId=${postId}`;
+  const [dataComment, setDataComment] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch(url)
@@ -23,6 +24,7 @@ function CommentModule({ postId }) {
       .then(
         (result) => {
           setDataComment(result.data);
+          setIsLoading(false);
         },
         (error) => {
           console.log(error);
@@ -32,15 +34,26 @@ function CommentModule({ postId }) {
 
   return (
     <CommentContainer>
-      {dataComment.map((comment, index) => (
-        <Comment
-          key={`${comment.index}-${index}`}
-          message={comment.message}
-          user={comment.userId ? comment.userId : 2}
-          commentsNumber={comment.length}
-        />
-      ))}
-      <NewComment postId={postId} />
+      {isLoading ? (
+        <div></div>
+      ) : (
+        dataComment.map((comment, index) => (
+          <Comment
+            key={`${comment.index}-${index}`}
+            message={comment.message}
+            user={comment.userId ? comment.userId : 2}
+            commentsNumber={comment.length}
+          />
+        ))
+      )}
+
+      <NewComment
+        postId={postId}
+        commentNumber={commentNumber}
+        setCommentNumber={setCommentNumber}
+        dataComment={dataComment}
+        setDataComment={setDataComment}
+      />
     </CommentContainer>
   );
 }
