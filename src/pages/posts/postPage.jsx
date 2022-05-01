@@ -54,7 +54,7 @@ const PostPage = () => {
         setIsPostLoading={setIsPostLoading}
       />
       {isPostLoading ? (
-        <div>Load</div>
+        <div>LOADIGN</div>
       ) : (
         <PostOrder>
           {dataPosts.map((post, index) => (
@@ -65,6 +65,7 @@ const PostPage = () => {
               postId={post.id}
               date={post.createdAt}
               comments={post.comments && post.comments.length}
+              dataPosts={dataPosts}
             />
           ))}
         </PostOrder>
