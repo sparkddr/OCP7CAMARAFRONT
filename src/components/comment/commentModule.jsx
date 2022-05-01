@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import styled from "styled-components";
 
 import colors from "../../utils/colors";
@@ -13,25 +11,14 @@ const CommentContainer = styled.div`
   padding-bottom: 15px;
 `;
 
-function CommentModule({ postId, commentNumber, setCommentNumber }) {
-  const url = `http://localhost:8000/api/comments?postId=${postId}`;
-  const [dataComment, setDataComment] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setDataComment(result.data);
-          setIsLoading(false);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }, []);
-
+function CommentModule({
+  postId,
+  commentNumber,
+  setCommentNumber,
+  dataComment,
+  setDataComment,
+  isLoading,
+}) {
   return (
     <CommentContainer>
       {isLoading ? (
@@ -42,7 +29,6 @@ function CommentModule({ postId, commentNumber, setCommentNumber }) {
             key={`${comment.index}-${index}`}
             message={comment.message}
             user={comment.userId ? comment.userId : 2}
-            commentsNumber={comment.length}
           />
         ))
       )}

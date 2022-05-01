@@ -9,16 +9,23 @@ const StyledContainer = styled.div`
   width: 538px;
 `;
 
+const PostOrder = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column-reverse;
+`;
+
 const PostPage = () => {
   const authCtx = useContext(AuthContext);
 
-  const [dataPost, setDataPost] = useState([]);
+  const [dataPosts, setDataPosts] = useState();
   const [isPostLoading, setIsPostLoading] = useState(true);
 
   const urlPosts = "http://localhost:8000/api/posts";
 
   useEffect(() => {
     const postCall = () => {
+      setIsPostLoading(true);
       return fetch(urlPosts, {
         headers: {
           Authorization: `Bearer ${authCtx.token}`,
@@ -27,7 +34,7 @@ const PostPage = () => {
         .then((res) => res.json())
         .then(
           (result) => {
-            setDataPost(result.data);
+            setDataPosts(result.data);
             setIsPostLoading(false);
           },
           (error) => {
@@ -40,20 +47,27 @@ const PostPage = () => {
 
   return (
     <StyledContainer>
-      <NewPost dataPost={dataPost} setDataPost={setDataPost} />
+      <NewPost
+        dataPosts={dataPosts}
+        setDataPosts={setDataPosts}
+        isPostLoading={isPostLoading}
+        setIsPostLoading={setIsPostLoading}
+      />
       {isPostLoading ? (
         <div>Load</div>
       ) : (
-        dataPost.map((post, index) => (
-          <Post
-            key={`${post.index}-${index}`}
-            message={post.message}
-            userId={post.userId ? post.userId : 4}
-            postId={post.id}
-            date={post.createdAt}
-            comments={post.comments && post.comments.length}
-          />
-        ))
+        <PostOrder>
+          {dataPosts.map((post, index) => (
+            <Post
+              key={`${post.index}-${index}`}
+              message={post.message}
+              userId={post.userId ? post.userId : 4}
+              postId={post.id}
+              date={post.createdAt}
+              comments={post.comments && post.comments.length}
+            />
+          ))}
+        </PostOrder>
       )}
     </StyledContainer>
   );

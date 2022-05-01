@@ -42,7 +42,7 @@ const Container = styled.div`
   }
 `;
 
-const NewPost = ({ dataPost, setDataPost }) => {
+const NewPost = ({ dataPosts, setDataPosts }) => {
   const postInputRef = useRef();
   const authCtx = useContext(AuthContext);
 
@@ -88,9 +88,16 @@ const NewPost = ({ dataPost, setDataPost }) => {
           });
         }
       })
-      .then((data) => {
-        setDataPost([data.data, ...dataPost]);
-        console.log(dataPost);
+      .then(() => {
+        fetch("http://localhost:8000/api/posts")
+          .then((res) => res.json())
+          .then((result) => {
+            setDataPosts(result.data);
+            console.log(result.data);
+          })
+          .then(() => {
+            console.log(dataPosts);
+          });
       })
       .catch((err) => {
         console.log(err);

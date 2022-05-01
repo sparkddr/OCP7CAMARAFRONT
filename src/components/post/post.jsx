@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from "react";
 
 import heartEmpty from "../../assets/icons/heart-regular.svg";
 import heartFull from "../../assets/icons/heart-solid.svg";
+import ellipsis from "../../assets/icons/ellipsis-solid.svg";
 import AuthContext from "../../store/auth-context";
 
 import CommentModule from "../comment/commentModule";
@@ -15,11 +16,17 @@ const PostContainer = styled.div`
   border-radius: 20px;
   margin-bottom: 40px;
   margin: 30px auto;
+  width: 100%;
   padding: 13px 20px 0px 20px;
 `;
 
 const UserDiv = styled.div`
   display: flex;
+  .ellipsis {
+    height: 15px;
+    margin-left: auto;
+    cursor: pointer;
+  }
   h2 {
     font-size: 12px;
     margin-bottom: -11px;
@@ -29,7 +36,7 @@ const UserDiv = styled.div`
     text-align: right;
     font-weight: 400;
   }
-  img {
+  .icon {
     height: 61px;
     border-radius: 47px;
     margin-right: 10px;
@@ -53,7 +60,7 @@ const BottomPost = styled.div`
   }
 `;
 
-const Post = ({ message, date, postId, userId, comments }) => {
+const Post = ({ message, date, postId, userId }) => {
   const authCtx = useContext(AuthContext);
 
   const [likeState, setLikeState] = useState(false);
@@ -62,12 +69,15 @@ const Post = ({ message, date, postId, userId, comments }) => {
 
   const [dataUser, setDataUser] = useState([]);
   const [isUserLoading, setUserLoading] = useState(true);
+  const [dataComment, setDataComment] = useState();
+  const [isCommentLoading, setIsCommentLoading] = useState(true);
 
-  const [commentNumber, setCommentNumber] = useState(comments);
+  const [commentNumber, setCommentNumber] = useState();
   const [showComments, setShowComments] = useState(false);
 
   const urlUser = `http://localhost:8000/api/users/${userId}`;
   const urlLikes = `http://localhost:8000/api/likes/post/${postId}`;
+  const url = `http://localhost:8000/api/comments?postId=${postId}`;
 
   const likeHandler = () => {
     fetch("http://localhost:8000/api/likes", {
@@ -121,6 +131,24 @@ const Post = ({ message, date, postId, userId, comments }) => {
       })
       .catch((err) => {});
   };
+
+  useEffect(() => {
+    const getComments = () => {
+      fetch(url)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setCommentNumber(result.data.length);
+            setDataComment(result.data);
+            setIsCommentLoading(false);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    };
+    getComments();
+  }, []);
 
   useEffect(() => {
     const getUsers = () => {
@@ -182,7 +210,7 @@ const Post = ({ message, date, postId, userId, comments }) => {
         <div></div>
       ) : (
         <UserDiv>
-          <img src={userIcon} alt="icone utilisateur" />
+          <img className="icon" src={userIcon} alt="icone utilisateur" />
           <div>
             <h2>
               {dataUser.lastname} {dataUser.firstname}
@@ -191,6 +219,7 @@ const Post = ({ message, date, postId, userId, comments }) => {
               Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
             </h3>
           </div>
+          <img className="ellipsis" src={ellipsis} alt="modification" />
         </UserDiv>
       )}
       <p>{message}</p>
@@ -203,15 +232,21 @@ const Post = ({ message, date, postId, userId, comments }) => {
           )}
           <p>{likeNum}</p>
         </div>
-        <p className="comments" onClick={handleComments}>
-          {commentNumber} Commentaires
-        </p>
+        {!isCommentLoading && (
+          <p className="comments" onClick={handleComments}>
+            {commentNumber} Commentaires
+          </p>
+        )}
       </BottomPost>
       {showComments && (
         <CommentModule
           postId={postId}
           commentNumber={commentNumber}
           setCommentNumber={setCommentNumber}
+          dataComment={dataComment}
+          setDataComment={setDataComment}
+          isLoading={isCommentLoading}
+          setIsLoading={setIsCommentLoading}
         ></CommentModule>
       )}
     </PostContainer>
