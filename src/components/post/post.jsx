@@ -10,6 +10,8 @@ import ellipsis from "../../assets/icons/ellipsis-solid.svg";
 import AuthContext from "../../store/auth-context";
 
 import CommentModule from "../comment/commentModule";
+import ModifyPost from "./modifyPost";
+import ModalModifyPost from "./modalModifyPost";
 
 const PostContainer = styled.div`
   background-color: ${colors.secondary};
@@ -17,7 +19,8 @@ const PostContainer = styled.div`
   margin-bottom: 40px;
   margin: 30px auto;
   width: 100%;
-  padding: 13px 20px 0px 20px;
+  padding: 15px 20px 0px 20px;
+  position: relative;
 `;
 
 const UserDiv = styled.div`
@@ -60,7 +63,16 @@ const BottomPost = styled.div`
   }
 `;
 
-const Post = ({ message, date, postId, userId }) => {
+const Post = ({
+  message,
+  date,
+  postId,
+  userId,
+  isUserPost,
+  dataPosts,
+  setDataPosts,
+  post,
+}) => {
   const authCtx = useContext(AuthContext);
 
   const [likeState, setLikeState] = useState(false);
@@ -74,6 +86,11 @@ const Post = ({ message, date, postId, userId }) => {
 
   const [commentNumber, setCommentNumber] = useState();
   const [showComments, setShowComments] = useState(false);
+
+  const [dataMessage, setDataMessage] = useState(message);
+
+  const [modifyModal, setModifyModal] = useState(false);
+  const [modifyModalPage, setModifyModalPage] = useState(false);
 
   const urlUser = `http://localhost:8000/api/users/${userId}`;
   const urlLikes = `http://localhost:8000/api/likes/post/${postId}`;
@@ -204,8 +221,20 @@ const Post = ({ message, date, postId, userId }) => {
     showComments ? setShowComments(false) : setShowComments(true);
   };
 
+  const handleModifyModal = () => {
+    modifyModal ? setModifyModal(false) : setModifyModal(true);
+  };
+
   return (
     <PostContainer>
+      {modifyModalPage && (
+        <ModalModifyPost
+          postId={postId}
+          setModifyModalPage={setModifyModalPage}
+          setDataMessage={setDataMessage}
+          dataMessage={dataMessage}
+        />
+      )}
       {isUserLoading ? (
         <div></div>
       ) : (
@@ -219,10 +248,24 @@ const Post = ({ message, date, postId, userId }) => {
               Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
             </h3>
           </div>
-          <img className="ellipsis" src={ellipsis} alt="modification" />
+          <img
+            onClick={handleModifyModal}
+            className="ellipsis"
+            src={ellipsis}
+            alt="modification"
+          />
         </UserDiv>
       )}
-      <p>{message}</p>
+      {modifyModal && (
+        <ModifyPost
+          isUserPost={isUserPost}
+          postId={postId}
+          dataPosts={dataPosts}
+          setDataPosts={setDataPosts}
+          setModifyModalPage={setModifyModalPage}
+        />
+      )}
+      <p>{dataMessage}</p>
       <BottomPost>
         <div>
           {likeState ? (

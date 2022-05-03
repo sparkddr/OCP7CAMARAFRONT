@@ -66,6 +66,9 @@ const PostPage = () => {
               date={post.createdAt}
               comments={post.comments && post.comments.length}
               dataPosts={dataPosts}
+              setDataPosts={setDataPosts}
+              isUserPost={post.userId === authCtx.userId}
+              post={post}
             />
           ))}
         </PostOrder>

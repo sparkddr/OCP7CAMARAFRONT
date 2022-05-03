@@ -9,9 +9,10 @@ const Container = styled.div`
   background-color: ${colors.secondary};
   border-radius: 20px;
   margin-bottom: 40px;
-  margin: 30px auto;
+  margin: 30px 0px;
   height: 80px;
-  padding: 15px;
+  width: 100%;
+  padding: 20px;
   display: flex;
   align-items: center;
   img {
@@ -29,9 +30,8 @@ const Container = styled.div`
     border: none;
   }
   button {
-    margin-left: 5px;
     all: unset;
-    margin-left: 5px;
+    margin-left: 20px;
     padding: 5px 8px;
     border-radius: 10px;
     background-color: #3b8ea5;
