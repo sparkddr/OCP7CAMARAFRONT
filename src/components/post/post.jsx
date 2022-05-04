@@ -71,7 +71,7 @@ const Post = ({
   isUserPost,
   dataPosts,
   setDataPosts,
-  post,
+  authUser,
 }) => {
   const authCtx = useContext(AuthContext);
 
@@ -290,6 +290,7 @@ const Post = ({
           setDataComment={setDataComment}
           isLoading={isCommentLoading}
           setIsLoading={setIsCommentLoading}
+          authUser={authUser}
         ></CommentModule>
       )}
     </PostContainer>

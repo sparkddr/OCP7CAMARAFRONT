@@ -68,6 +68,7 @@ const PostPage = () => {
               dataPosts={dataPosts}
               setDataPosts={setDataPosts}
               isUserPost={post.userId === authCtx.userId}
+              authUser={authCtx.userId}
               post={post}
             />
           ))}

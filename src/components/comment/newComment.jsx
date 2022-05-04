@@ -64,12 +64,10 @@ const NewComment = ({
         "Content-Type": "application/json",
       },
     })
-      .then(() => {
+      .then((res) => res.json())
+      .then((data) => {
         setCommentNumber(commentNumber + 1);
-        setDataComment([
-          ...dataComment,
-          { userId: authCtx.userId, postId: postId, message: enteredComment },
-        ]);
+        setDataComment([...dataComment, data.data]);
       })
       .catch((err) => {
         console.log(err);

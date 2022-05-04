@@ -18,6 +18,7 @@ function CommentModule({
   dataComment,
   setDataComment,
   isLoading,
+  authUser,
 }) {
   return (
     <CommentContainer>
@@ -29,6 +30,12 @@ function CommentModule({
             key={`${comment.index}-${index}`}
             message={comment.message}
             user={comment.userId ? comment.userId : 2}
+            commentId={comment.id}
+            dataComment={dataComment}
+            setDataComment={setDataComment}
+            commentNumber={commentNumber}
+            setCommentNumber={setCommentNumber}
+            authUser={authUser === comment.userId}
           />
         ))
       )}
