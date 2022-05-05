@@ -24,7 +24,7 @@ const InputDiv = styled.div`
   }
   & input {
     border: 1px solid white;
-    border-radius: 3px;
+    border-radius: 14px;
     width: 70%;
     height: 20px;
   }

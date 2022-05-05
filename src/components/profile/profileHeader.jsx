@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 import userIcon from "../../assets/user_icon_color.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+
+import ModifyProfile from "./profileModify";
 
 import colors from "../../utils/colors";
 
@@ -14,10 +19,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 15px;
+  position: relative;
   .user-pic {
     height: 128px;
     border-radius: 45px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
   }
   .user-name {
     font-size: 24px;
@@ -29,17 +35,38 @@ const Container = styled.div`
     margin: 0px;
     color: ${colors.grey};
   }
+  .icon-fa {
+    position: absolute;
+    font-size: 20px;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+  }
 `;
 
 const ProfilHeader = ({ user }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <Container>
-      <img className="user-pic" src={userIcon} alt="Profil Utilisateur" />
-      <h2 className="user-name">
-        {user.firstname} {user.lastname}
-      </h2>
-      <h3 className="user-role">{user.role}</h3>
-    </Container>
+    <div>
+      <Container>
+        <FontAwesomeIcon
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+          className="icon-fa"
+          icon={faPenToSquare}
+        />
+        <img className="user-pic" src={userIcon} alt="Profil Utilisateur" />
+        <h2 className="user-name">
+          {user.firstname} {user.lastname}
+        </h2>
+        <h3 className="user-role">{user.role}</h3>
+      </Container>
+      {isModalOpen && (
+        <ModifyProfile setIsModalOpen={setIsModalOpen} user={user} />
+      )}
+    </div>
   );
 };
 
