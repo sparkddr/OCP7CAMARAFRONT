@@ -3,6 +3,7 @@ const colors = {
   secondary: "#E1F4FC",
   secondaryDark: "#CCDEE5",
   grey: "#727272",
+  pink: "#FF9F9F",
 };
 
 export default colors;

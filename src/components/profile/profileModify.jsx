@@ -27,7 +27,7 @@ const Container = styled.div`
     margin-top: 20px;
   }
   form {
-    margin-top: 50px;
+    margin-top: 30px;
     width: 100%;
     .label-input {
       display: flex;
@@ -46,6 +46,37 @@ const Container = styled.div`
         flex-direction: column;
       }
     }
+  }
+  .validation {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+  }
+  .password-div {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+const Button = styled.button`
+  all: unset;
+  height: 30px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: #3b8ea5;
+  font-size: 13px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 30px;
+  &.annuler {
+    background-color: ${colors.pink};
+  }
+  &.password-button {
+    text-align: center;
+    margin: 0 0 5px 0;
+    height: 28px;
   }
 `;
 
@@ -71,7 +102,7 @@ const Label = styled.label`
   align-items: center;
 `;
 
-const ModifyProfile = ({ setIsModalOpen, user }) => {
+const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
   const [modifyPassword, setModifyPassword] = useState(false);
 
   const passwordInputRef = useRef();
@@ -112,6 +143,12 @@ const ModifyProfile = ({ setIsModalOpen, user }) => {
     }).then((res) => {
       if (res.ok) {
         setIsModalOpen(false);
+        setUserData({
+          ...userData,
+          firstname: enteredFirstname,
+          lastname: enteredLastname,
+          role: enteredRole,
+        });
         alert("Vos modifications ont bien été enregistrées");
       } else {
         alert("Il y a eu une erreur");
@@ -128,46 +165,47 @@ const ModifyProfile = ({ setIsModalOpen, user }) => {
             <Label>Nom :</Label>
             <Label>Prénom :</Label>
             <Label>Role :</Label>
-            {modifyPassword && <Label>Mot de passe : </Label>}
+            <Label>Mot de passe : </Label>
           </div>
           <div className="input-container">
-            <Input ref={lastnameInputRef} defaultValue={user.lastname}></Input>
+            <Input
+              ref={lastnameInputRef}
+              defaultValue={userData.lastname}
+            ></Input>
             <Input
               ref={firstnameInputRef}
-              defaultValue={user.firstname}
+              defaultValue={userData.firstname}
             ></Input>
-            <Input ref={roleInputRef} defaultValue={user.role}></Input>
-            {modifyPassword && (
+            <Input ref={roleInputRef} defaultValue={userData.role}></Input>
+            {modifyPassword ? (
               <Input
                 type="password"
                 id="new-password"
                 ref={passwordInputRef}
               ></Input>
+            ) : (
+              <Button
+                className="password-button"
+                onClick={() => {
+                  setModifyPassword(true);
+                }}
+              >
+                Modifier mot de passe
+              </Button>
             )}
           </div>
         </div>
 
-        {modifyPassword ? (
-          <div></div>
-        ) : (
-          <button
-            onClick={() => {
-              setModifyPassword(true);
-            }}
-          >
-            Modifier password
-          </button>
-        )}
-
-        <div>
-          <button type="submit">Valider les modifications</button>
-          <button
+        <div className="validation">
+          <Button type="submit">Valider les modifications</Button>
+          <Button
+            className="annuler"
             onClick={() => {
               setIsModalOpen(false);
             }}
           >
             Annuler
-          </button>
+          </Button>
         </div>
       </form>
     </Container>

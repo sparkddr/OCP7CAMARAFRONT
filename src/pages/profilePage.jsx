@@ -19,7 +19,11 @@ const ProfilePage = () => {
       });
   }, []);
 
-  return isDataLoading ? <div></div> : <ProfilHeader user={userData} />;
+  return isDataLoading ? (
+    <div></div>
+  ) : (
+    <ProfilHeader userData={userData} setUserData={setUserData} />
+  );
 };
 
 export default ProfilePage;

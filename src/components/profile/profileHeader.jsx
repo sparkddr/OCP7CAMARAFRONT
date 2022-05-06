@@ -44,7 +44,7 @@ const Container = styled.div`
   }
 `;
 
-const ProfilHeader = ({ user }) => {
+const ProfilHeader = ({ userData, setUserData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -59,12 +59,16 @@ const ProfilHeader = ({ user }) => {
         />
         <img className="user-pic" src={userIcon} alt="Profil Utilisateur" />
         <h2 className="user-name">
-          {user.firstname} {user.lastname}
+          {userData.firstname} {userData.lastname}
         </h2>
-        <h3 className="user-role">{user.role}</h3>
+        <h3 className="user-role">{userData.role}</h3>
       </Container>
       {isModalOpen && (
-        <ModifyProfile setIsModalOpen={setIsModalOpen} user={user} />
+        <ModifyProfile
+          setIsModalOpen={setIsModalOpen}
+          userData={userData}
+          setUserData={setUserData}
+        />
       )}
     </div>
   );
