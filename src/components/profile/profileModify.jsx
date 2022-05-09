@@ -1,6 +1,5 @@
 import { useRef, useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
-import { useNavigate } from "react-router-dom";
 import userIcon from "../../assets/user_icon_color.png";
 
 import colors from "../../utils/colors";
@@ -20,11 +19,20 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  .picture-modify {
+    position: absolute;
+    font-size: 10px;
+    width: 70px;
+    text-align: center;
+    right: 10%;
+    top: 15%;
+  }
   img {
     height: 170px;
     width: 170px;
     border-radius: 47px;
     margin-top: 20px;
+    object-fit: contain;
   }
   form {
     margin-top: 30px;
@@ -47,6 +55,10 @@ const Container = styled.div`
       }
     }
   }
+  img:hover ~ div {
+    opacity: 1;
+  }
+
   .validation {
     margin-top: 25px;
     display: flex;
@@ -56,6 +68,39 @@ const Container = styled.div`
     margin-top: 8px;
     display: flex;
     justify-content: center;
+  }
+`;
+
+const ModifyPicture = styled.div`
+  position: absolute;
+  top 10%;
+  right : 37.5%;
+  width : 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  opacity:0;
+  &:hover{
+    opacity : 1;
+  }
+  input{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+  }
+  label{
+    z-index : 2;
+    display: inline-block;
+    text-align : center;
+    padding : 3px;
+    border-radius : 15px;
+    background-color : ${colors.secondaryDark};
+    
+
   }
 `;
 
@@ -104,11 +149,14 @@ const Label = styled.label`
 
 const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
   const [modifyPassword, setModifyPassword] = useState(false);
+  const [picture, setPicture] = useState();
+  // const [modifyPicture, setModifyPicture] = useState(false);
 
   const passwordInputRef = useRef();
   const lastnameInputRef = useRef();
   const firstnameInputRef = useRef();
   const roleInputRef = useRef();
+  const picInputRef = useRef();
 
   // const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
@@ -132,33 +180,55 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
           lastname: enteredLastname,
           role: enteredRole,
         };
+    const dataForm = new FormData();
+    dataForm.append("user", JSON.stringify(sendBody));
+    dataForm.append("picture", picture);
 
     fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
       method: "PUT",
-      body: JSON.stringify(sendBody),
+      body: dataForm,
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${authCtx.token}`,
       },
-    }).then((res) => {
-      if (res.ok) {
+    })
+      .then((res) => res.json())
+      .then((res) => {
         setIsModalOpen(false);
         setUserData({
           ...userData,
           firstname: enteredFirstname,
           lastname: enteredLastname,
           role: enteredRole,
+          profilpic: res.data.profilpic,
         });
         alert("Vos modifications ont bien été enregistrées");
-      } else {
+      })
+      .catch(() => {
         alert("Il y a eu une erreur");
-      }
-    });
+      });
   };
 
   return (
     <Container>
-      <img src={userIcon} alt="Profil" />
+      <div>
+        <img
+          src={userData.profilpic ? userData.profilpic : userIcon}
+          alt="Profil"
+        />
+        <ModifyPicture>
+          <label class="label-picture" for="file">
+            Modifier la photo de profil
+          </label>
+          <input
+            type="file"
+            name="file"
+            id="file"
+            accept="image/png, image/jpeg, image/gif"
+            onChange={(e) => setPicture(e.target.files[0])}
+            ref={picInputRef}
+          />
+        </ModifyPicture>
+      </div>
       <form onSubmit={changeUser}>
         <div className="label-input">
           <div className="label-container">
@@ -195,7 +265,6 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
             )}
           </div>
         </div>
-
         <div className="validation">
           <Button type="submit">Valider les modifications</Button>
           <Button

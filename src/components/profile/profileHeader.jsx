@@ -57,7 +57,11 @@ const ProfilHeader = ({ userData, setUserData }) => {
           className="icon-fa"
           icon={faPenToSquare}
         />
-        <img className="user-pic" src={userIcon} alt="Profil Utilisateur" />
+        <img
+          className="user-pic"
+          src={userData.profilpic ? userData.profilpic : userIcon}
+          alt="Profil Utilisateur"
+        />
         <h2 className="user-name">
           {userData.firstname} {userData.lastname}
         </h2>
