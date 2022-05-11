@@ -1,20 +1,26 @@
 import { useRef, useContext, useEffect, useState } from "react";
 import AuthContext from "../../store/auth-context";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+
 import styled from "styled-components";
 import colors from "../../utils/colors";
 import userIcon from "../../assets/user_icon_color.png";
+
+import NewPostModal from "./newPostModal";
 
 const Container = styled.div`
   background-color: ${colors.secondary};
   border-radius: 20px;
   margin-bottom: 40px;
   margin: 30px 0px;
-  height: 80px;
+  height: 100px;
   width: 100%;
-  padding: 20px;
+  padding: 5px 20px 30px 20px;
   display: flex;
   align-items: center;
+  position: relative;
   img {
     height: 61px;
     border-radius: 47px;
@@ -42,12 +48,38 @@ const Container = styled.div`
   }
 `;
 
+const IconContainer = styled.div`
+  position: absolute;
+  bottom: 0%;
+  right: 25%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+
+  .icon-div {
+    margin: 0px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .icon-image {
+      font-size: 25px;
+    }
+    p {
+      font-size: 13px;
+      margin-left: 5px;
+      text-align: center;
+    }
+  }
+`;
+
 const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
   const postInputRef = useRef();
   const authCtx = useContext(AuthContext);
 
   const [dataUser, setDataUser] = useState({});
   const [isDataLoading, setIsDataLoading] = useState(true);
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
@@ -99,7 +131,10 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
     <div></div>
   ) : (
     <Container>
-      <img src={userIcon} alt="icone utilisateur" />
+      <img
+        src={dataUser.profilpic ? dataUser.profilpic : userIcon}
+        alt="icone utilisateur"
+      />
       <form onSubmit={sendPost}>
         <input
           type="text"
@@ -108,6 +143,29 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
         />
         <button type="submit"> Envoyer</button>
       </form>
+      <IconContainer>
+        <div
+          className="icon-div"
+          onClick={() => {
+            setIsPostModalOpen(true);
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faImage}
+            className="icon-image"
+          ></FontAwesomeIcon>
+          <p>Ajouter une image / un GIF</p>
+        </div>
+      </IconContainer>
+      {isPostModalOpen && (
+        <NewPostModal
+          profilpic={dataUser.profilpic ? dataUser.profilpic : userIcon}
+          dataUser={dataUser}
+          dataPosts={dataPosts}
+          setDataPosts={setDataPosts}
+          setIsPostModalOpen={setIsPostModalOpen}
+        />
+      )}
     </Container>
   );
 };

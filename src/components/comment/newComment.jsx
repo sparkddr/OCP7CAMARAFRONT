@@ -14,6 +14,7 @@ const NComment = styled.div`
     width: 43px;
     height: 43px;
     border-radius: 29px;
+    object-fit: contain;
   }
   input {
     width: 320px;
@@ -44,6 +45,7 @@ const NewComment = ({
   commentNumber,
   dataComment,
   setDataComment,
+  profilpic,
 }) => {
   const authCtx = useContext(AuthContext);
   const commentInputRef = useRef();
@@ -76,7 +78,7 @@ const NewComment = ({
 
   return (
     <NComment>
-      <img src={userIcon} alt="icone utilisateur" />
+      <img src={profilpic} alt="icone utilisateur" />
       <form onSubmit={sendComment}>
         <input type="text" ref={commentInputRef} />
         <button type="submit"> Envoyer</button>

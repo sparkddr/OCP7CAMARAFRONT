@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import styled from "styled-components";
 import colors from "../../utils/colors";
 
@@ -23,6 +25,9 @@ const ModifyPost = ({
   setDataPosts,
   dataPosts,
   setModifyModalPage,
+  setIsSignalModalOpen,
+  isSignalModalOpen,
+  setModifyModal,
 }) => {
   const deletePost = () => {
     fetch(`http://localhost:8000/api/posts/${postId}`, {
@@ -47,7 +52,14 @@ const ModifyPost = ({
           <p onClick={deletePost}>Supprimer Post</p>
         </div>
       ) : (
-        <p>Signaler Post</p>
+        <p
+          onClick={() => {
+            setIsSignalModalOpen(true);
+            setModifyModal(false);
+          }}
+        >
+          Signaler Post
+        </p>
       )}
     </Modal>
   );

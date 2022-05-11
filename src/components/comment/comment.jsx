@@ -16,7 +16,8 @@ const CommentModel = styled.div`
   display: flex;
   align-items :center;
   img {
-      align-self : flex-start;
+    object-fit : contain;
+    align-self : flex-start;
     width: 43px;
     height: 43px;
     border-radius: 29px;
@@ -84,7 +85,14 @@ const Comment = ({
 
   return (
     <CommentModel>
-      <img src={userIcon} alt="icone utilisateur" />
+      {isLoading ? (
+        <div></div>
+      ) : (
+        <img
+          src={dataUser.profilpic ? dataUser.profilpic : userIcon}
+          alt="icone utilisateur"
+        />
+      )}
       {isLoading ? (
         <div></div>
       ) : (

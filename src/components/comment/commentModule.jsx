@@ -19,6 +19,7 @@ function CommentModule({
   setDataComment,
   isLoading,
   authUser,
+  profilpic,
 }) {
   return (
     <CommentContainer>
@@ -46,6 +47,7 @@ function CommentModule({
         setCommentNumber={setCommentNumber}
         dataComment={dataComment}
         setDataComment={setDataComment}
+        profilpic={profilpic}
       />
     </CommentContainer>
   );

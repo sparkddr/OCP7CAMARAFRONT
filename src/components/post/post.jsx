@@ -12,6 +12,7 @@ import AuthContext from "../../store/auth-context";
 import CommentModule from "../comment/commentModule";
 import ModifyPost from "./modifyPost";
 import ModalModifyPost from "./modalModifyPost";
+import SignalPostModal from "./signalPostModal";
 
 const PostContainer = styled.div`
   background-color: ${colors.secondary};
@@ -63,6 +64,16 @@ const BottomPost = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  width: 100%;
+  height: 268px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
 const Post = ({
   message,
   date,
@@ -72,6 +83,7 @@ const Post = ({
   dataPosts,
   setDataPosts,
   authUser,
+  pictureUrl,
 }) => {
   const authCtx = useContext(AuthContext);
 
@@ -91,6 +103,8 @@ const Post = ({
 
   const [modifyModal, setModifyModal] = useState(false);
   const [modifyModalPage, setModifyModalPage] = useState(false);
+
+  const [isSignalModalOpen, setIsSignalModalOpen] = useState(false);
 
   const urlUser = `http://localhost:8000/api/users/${userId}`;
   const urlLikes = `http://localhost:8000/api/likes/post/${postId}`;
@@ -227,6 +241,13 @@ const Post = ({
 
   return (
     <PostContainer>
+      {isSignalModalOpen && (
+        <SignalPostModal
+          setIsSignalModalOpen={setIsSignalModalOpen}
+          postId={postId}
+          userId={authCtx.userId}
+        />
+      )}
       {modifyModalPage && (
         <ModalModifyPost
           postId={postId}
@@ -239,7 +260,11 @@ const Post = ({
         <div></div>
       ) : (
         <UserDiv>
-          <img className="icon" src={userIcon} alt="icone utilisateur" />
+          <img
+            className="icon"
+            src={dataUser.profilpic ? dataUser.profilpic : userIcon}
+            alt="icone utilisateur"
+          />
           <div>
             <h2>
               {dataUser.lastname} {dataUser.firstname}
@@ -262,10 +287,18 @@ const Post = ({
           postId={postId}
           dataPosts={dataPosts}
           setDataPosts={setDataPosts}
+          setModifyModal={setModifyModal}
           setModifyModalPage={setModifyModalPage}
+          isSignalModalOpen={isSignalModalOpen}
+          setIsSignalModalOpen={setIsSignalModalOpen}
         />
       )}
       <p>{dataMessage}</p>
+      {pictureUrl && (
+        <ImageContainer>
+          <img src={pictureUrl} alt="Contenu du post" />
+        </ImageContainer>
+      )}
       <BottomPost>
         <div>
           {likeState ? (
@@ -291,6 +324,7 @@ const Post = ({
           isLoading={isCommentLoading}
           setIsLoading={setIsCommentLoading}
           authUser={authUser}
+          profilpic={dataUser.profilpic}
         ></CommentModule>
       )}
     </PostContainer>

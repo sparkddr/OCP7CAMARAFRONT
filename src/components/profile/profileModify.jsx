@@ -216,7 +216,7 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
           alt="Profil"
         />
         <ModifyPicture>
-          <label class="label-picture" for="file">
+          <label className="label-picture" htmlFor="file">
             Modifier la photo de profil
           </label>
           <input
