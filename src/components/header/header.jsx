@@ -38,8 +38,8 @@ const StyledLink = styled(Link)`
 
 function Header() {
   const authCtx = useContext(AuthContext);
-
   const isLoggedIn = authCtx.isLoggedIn;
+  const isAdmin = authCtx.admin;
 
   return (
     <StyledNav>
@@ -47,6 +47,11 @@ function Header() {
         <StyledLogo src={logo} alt="logo" />
       </div>
       <StyledList>
+        {isAdmin && (
+          <li>
+            <StyledLink to="/signals">Signalements</StyledLink>
+          </li>
+        )}
         {!isLoggedIn && (
           <li>
             <StyledLink to="/auth">Se connecter</StyledLink>

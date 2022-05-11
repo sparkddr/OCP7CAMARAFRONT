@@ -10,6 +10,7 @@ import Header from "./components/header/header";
 import PostPage from "./pages/posts/postPage";
 import AuthPage from "./pages/authPage";
 import ProfilePage from "./pages/profilePage";
+import SignalPage from "./pages/signals/signalsPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +22,7 @@ root.render(
           <Route path="/posts" element={<PostPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/signals" element={<SignalPage />} />
         </Routes>
       </Router>
     </AuthContextProvider>

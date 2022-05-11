@@ -94,7 +94,7 @@ const AuthForm = () => {
           }
         })
         .then((data) => {
-          authCtx.login(data.token, data.data.id);
+          authCtx.login(data.token, data.data.id, data.data.admin);
           navigate("/posts");
         })
         .catch((err) => {});

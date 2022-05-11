@@ -8,6 +8,7 @@ import styled from "styled-components";
 import colors from "../../utils/colors";
 
 import CommentModal from "./commentModal";
+import SignalCommentModal from "./signalCommentModal";
 
 const CommentModel = styled.div`
 
@@ -74,6 +75,9 @@ const Comment = ({
   const [isLoading, setisLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isSignalCommentModalOpen, setIsSignalCommentModalOpen] =
+    useState(false);
+
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${user}`)
       .then((res) => res.json())
@@ -85,6 +89,12 @@ const Comment = ({
 
   return (
     <CommentModel>
+      {isSignalCommentModalOpen && (
+        <SignalCommentModal
+          commentId={commentId}
+          setIsSignalCommentModalOpen={setIsSignalCommentModalOpen}
+        />
+      )}
       {isLoading ? (
         <div></div>
       ) : (
@@ -112,6 +122,7 @@ const Comment = ({
               commentNumber={commentNumber}
               setCommentNumber={setCommentNumber}
               authUser={authUser}
+              setIsSignalCommentModalOpen={setIsSignalCommentModalOpen}
             />
           )}
           <img

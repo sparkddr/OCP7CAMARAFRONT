@@ -28,6 +28,7 @@ const CommentModal = ({
   commentNumber,
   setCommentNumber,
   authUser,
+  setIsSignalCommentModalOpen,
 }) => {
   const deleteComment = () => {
     console.log(dataComment);
@@ -51,7 +52,15 @@ const CommentModal = ({
           Supprimer
         </p>
       ) : (
-        <p className="modale">Signaler</p>
+        <p
+          onClick={() => {
+            setIsSignalCommentModalOpen(true);
+            setIsModalOpen(false);
+          }}
+          className="modale"
+        >
+          Signaler
+        </p>
       )}
     </Modale>
   );
