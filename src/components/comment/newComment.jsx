@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import userIcon from "../../assets/user_icon_color.png";
 import styled from "styled-components";
 
@@ -45,10 +45,21 @@ const NewComment = ({
   commentNumber,
   dataComment,
   setDataComment,
-  profilpic,
 }) => {
   const authCtx = useContext(AuthContext);
   const commentInputRef = useRef();
+  const [profilpic, setProfilPic] = useState(userIcon);
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setProfilPic(res.data.profilpic);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  });
 
   const sendComment = (event) => {
     const url = "http://localhost:8000/api/comments";
