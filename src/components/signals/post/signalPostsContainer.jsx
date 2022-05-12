@@ -10,7 +10,7 @@ const PostContainer = styled.div`
   background-color: ${colors.secondary};
   padding: 0.1px;
 
-  h2 {
+  .post-title {
     margin: 20px 0px 25px 20px;
   }
   .title {
@@ -22,6 +22,7 @@ const PostTab = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 2fr 1fr 2fr 1fr;
   text-align: center;
+  font-weight: 800;
   .item-a {
     grid-column-start: 3;
   }
@@ -44,7 +45,7 @@ const SignalPostsContainer = () => {
   return (
     <PostContainer>
       <div className="title">
-        <h2>POSTS</h2>
+        <h2 className="post-title">POSTS</h2>
       </div>
       <PostTab>
         <p className="item-a">Signalé par</p>
@@ -60,7 +61,7 @@ const SignalPostsContainer = () => {
               signalId={signal.id}
               user={signal.user ? signal.user : ""}
               message={signal.message}
-              postId={signal.postId}
+              post={signal.post}
               setSignalPostData={setSignalPostData}
               signalPostData={signalPostData}
             />

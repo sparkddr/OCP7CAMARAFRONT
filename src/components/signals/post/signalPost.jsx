@@ -1,19 +1,48 @@
 import styled from "styled-components";
+import ModalSeePost from "../modalSeePost";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const Signal = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 2fr 1fr 2fr 1fr;
-  text-align: center;
+  .tab {
+    text-align: center;
+  }
+  .open-modal {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .icon-tab {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .icon-signal-post {
+    font-size: 25px;
+    cursor: pointer;
+    &:nth-child(1) {
+      color: red;
+    }
+    &:nth-child(2) {
+      color: green;
+    }
+  }
 `;
 
 const SignalPost = ({
   signalId,
   user,
   message,
-  postId,
+  post,
   setSignalPostData,
   signalPostData,
 }) => {
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+
   const deleteSignal = () => {
     fetch(`http://localhost:8000/api/signal/posts/${signalId}`, {
       method: "DELETE",
@@ -28,15 +57,49 @@ const SignalPost = ({
         console.log(err);
       });
   };
+  const deletePost = () => {
+    fetch(`http://localhost:8000/api/posts/${post.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setSignalPostData(
+          signalPostData.filter((signal) => signal.id !== signalId)
+        );
+      });
+  };
   return (
     <Signal>
-      <p># {signalId}</p>
-      <p>Voir le post</p>
-      <p>
+      <p className="tab"># {signalId}</p>
+      <p
+        className="open-modal tab"
+        onClick={() => {
+          setIsPostModalOpen(true);
+        }}
+      >
+        Voir le post
+      </p>
+      <p className="tab">
         {user.firstname} {user.lastname}
       </p>
-      <p>{message}</p>
-      <p onClick={deleteSignal}>Effacer</p>
+      <p className="tab">{message}</p>
+      <div className="tab icon-tab">
+        <FontAwesomeIcon
+          title="Effacer le post"
+          onClick={deletePost}
+          className="icon-signal-post"
+          icon={faBan}
+        />
+        <FontAwesomeIcon
+          title="Annuler le signalement"
+          onClick={deleteSignal}
+          className="icon-signal-post"
+          icon={faCheck}
+        />
+      </div>
+      {isPostModalOpen && (
+        <ModalSeePost post={post} setIsPostModalOpen={setIsPostModalOpen} />
+      )}
     </Signal>
   );
 };

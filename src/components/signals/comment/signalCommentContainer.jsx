@@ -22,6 +22,7 @@ const CommentTab = styled.div`
   display: grid;
   grid-template-columns: 0.5fr 2fr 1fr 2fr 1fr;
   text-align: center;
+  font-weight: 700;
   .item-a {
     grid-column-start: 3;
   }
@@ -57,7 +58,7 @@ const SignalCommentsContainer = () => {
               signalId={signal.id}
               user={signal.user ? signal.user : ""}
               message={signal.message}
-              postId={signal.postId}
+              comment={signal.comment}
               setSignalCommentData={setSignalCommentData}
               signalCommentData={signalCommentData}
             />

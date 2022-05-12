@@ -84,6 +84,7 @@ const Post = ({
   setDataPosts,
   authUser,
   pictureUrl,
+  className,
 }) => {
   const authCtx = useContext(AuthContext);
 
@@ -240,7 +241,7 @@ const Post = ({
   };
 
   return (
-    <PostContainer>
+    <PostContainer className={className}>
       {isSignalModalOpen && (
         <SignalPostModal
           setIsSignalModalOpen={setIsSignalModalOpen}
