@@ -31,7 +31,7 @@ const PostTab = styled.div`
 `;
 
 const SignalPostsContainer = () => {
-  const [signalPostData, setSignalPostData] = useState();
+  const [signalPostData, setSignalPostData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     fetch("http://localhost:8000/api/signal/posts")
@@ -45,7 +45,9 @@ const SignalPostsContainer = () => {
   return (
     <PostContainer>
       <div className="title">
-        <h2 className="post-title">POSTS</h2>
+        <h2 className="post-title">
+          POSTS {signalPostData > 0 && ` (${signalPostData.length})`}
+        </h2>
       </div>
       <PostTab>
         <p className="item-a">Signalé par</p>

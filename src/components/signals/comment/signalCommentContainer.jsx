@@ -29,7 +29,7 @@ const CommentTab = styled.div`
 `;
 
 const SignalCommentsContainer = () => {
-  const [signalCommentData, setSignalCommentData] = useState();
+  const [signalCommentData, setSignalCommentData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     fetch("http://localhost:8000/api/signal/comments")
@@ -43,7 +43,10 @@ const SignalCommentsContainer = () => {
   return (
     <CommentContainer>
       <div className="title">
-        <h2>COMMENTAIRES</h2>
+        <h2>
+          COMMENTAIRES
+          {signalCommentData.length > 0 && ` (${signalCommentData.length})`}
+        </h2>
       </div>
       <CommentTab>
         <p className="item-a">Signalé par</p>

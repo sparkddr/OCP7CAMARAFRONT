@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import AuthContext from "../../store/auth-context";
 
 const Modale = styled.div`
   position: absolute;
@@ -30,6 +32,7 @@ const CommentModal = ({
   authUser,
   setIsSignalCommentModalOpen,
 }) => {
+  const authCtx = useContext(AuthContext);
   const deleteComment = () => {
     console.log(dataComment);
     fetch(`http://localhost:8000/api/comments/${commentId}`, {
@@ -47,7 +50,7 @@ const CommentModal = ({
 
   return (
     <Modale>
-      {authUser ? (
+      {authUser || authCtx.admin ? (
         <p onClick={deleteComment} className="modale">
           Supprimer
         </p>

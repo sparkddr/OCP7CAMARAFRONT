@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import styled from "styled-components";
 import colors from "../../utils/colors";
+import AuthContext from "../../store/auth-context";
 
 const Modal = styled.div`
   position: absolute;
@@ -29,6 +30,7 @@ const ModifyPost = ({
   isSignalModalOpen,
   setModifyModal,
 }) => {
+  const authCtx = useContext(AuthContext);
   const deletePost = () => {
     fetch(`http://localhost:8000/api/posts/${postId}`, {
       method: "DELETE",
@@ -46,7 +48,7 @@ const ModifyPost = ({
 
   return (
     <Modal postId={postId}>
-      {isUserPost ? (
+      {isUserPost || authCtx.admin ? (
         <div>
           <p onClick={modifyHandler}>Modifier Post</p>
           <p onClick={deletePost}>Supprimer Post</p>
