@@ -6,28 +6,46 @@ import colors from "../../utils/colors";
 import AuthContext from "../../store/auth-context";
 
 const Container = styled.div`
-  position: fixed;
-  top: 25%;
-  right: 50%-250px;
-  z-index: 6;
-  background-color: white;
-  width: 500px;
-  height: 55%;
-  text-align: center;
-  border-radius: 18px;
-  h2 {
-    font-size: 18px;
-  }
-  form {
-    height: 80%;
-  }
-  .user-container {
-    display: flex;
-    width: 90%;
-    margin: auto;
-    h3 {
-      font-size: 13px;
+  .newpost-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    background-color: ${colors.secondary};
+    width: 500px;
+    height: 55%;
+    text-align: center;
+    border-radius: 18px;
+    h2 {
+      font-size: 18px;
     }
+    form {
+      height: 80%;
+    }
+    .user-container {
+      display: flex;
+      width: 90%;
+      margin: auto;
+      h3 {
+        font-size: 13px;
+      }
+    }
+  }
+  &::after {
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    opacity: 0.3;
+    z-index: 1;
+  }
+  .cancel-button {
+    background-color: ${colors.pink};
   }
 `;
 
@@ -51,7 +69,7 @@ const FileContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
 
   input {
     width: 87%;
@@ -113,42 +131,46 @@ const NewPostModal = ({
 
   return (
     <Container>
-      <h2>Créer une publication</h2>
-      <div className="user-container">
-        <img src={profilpic} alt="profil"></img>
-        <h3>
-          {dataUser.firstname} {dataUser.lastname}
-        </h3>
-      </div>
-      <form onSubmit={sendPost}>
-        <TextContainer className="form-text">
-          <input
-            type="text"
-            defaultValue={"What's up " + dataUser.firstname + "?"}
-            ref={postInputRef}
-          />
-        </TextContainer>
-        <FileContainer>
-          <input
-            type="file"
-            name="media"
-            id="media"
-            accept="image/png, image/jpeg, image/gif"
-            onChange={(e) => setPicture(e.target.files[0])}
-          ></input>
-          <label htmlFor="media">Choisir une photo</label>
-        </FileContainer>
-        <div>
-          <button type="submit">Publier</button>
-          <button
-            onClick={() => {
-              setIsPostModalOpen(false);
-            }}
-          >
-            Annuler
-          </button>
+      <div className="newpost-modal">
+        <h2>Créer une publication</h2>
+        <div className="user-container">
+          <img src={profilpic} alt="profil"></img>
+          <h3>
+            {dataUser.firstname} {dataUser.lastname}
+          </h3>
         </div>
-      </form>
+        <form onSubmit={sendPost}>
+          <TextContainer className="form-text">
+            <input
+              type="text"
+              placeholder={"What's up " + dataUser.firstname + "?"}
+              ref={postInputRef}
+              required
+            />
+          </TextContainer>
+          <FileContainer>
+            <input
+              type="file"
+              name="media"
+              id="media"
+              accept="image/png, image/jpeg, image/gif"
+              onChange={(e) => setPicture(e.target.files[0])}
+            ></input>
+            <label htmlFor="media">Choisir une photo</label>
+          </FileContainer>
+          <div>
+            <button type="submit">Publier</button>
+            <button
+              className="cancel-button"
+              onClick={() => {
+                setIsPostModalOpen(false);
+              }}
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
+      </div>
     </Container>
   );
 };

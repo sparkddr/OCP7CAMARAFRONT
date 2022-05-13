@@ -2,29 +2,36 @@ import { useRef, useContext, useEffect, useState } from "react";
 import AuthContext from "../../store/auth-context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faImages } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
 import colors from "../../utils/colors";
 import userIcon from "../../assets/user_icon_color.png";
-
-import NewPostModal from "./newPostModal";
 
 const Container = styled.div`
   background-color: ${colors.secondary};
   border-radius: 20px;
   margin-bottom: 40px;
   margin: 30px 0px;
-  height: 100px;
   width: 100%;
-  padding: 5px 20px 30px 20px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  img {
+  padding: 20px 20px 10px 20px;
+
+  .top-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d2d2d2;
+  }
+
+  .img-profil {
     height: 61px;
     border-radius: 47px;
     margin-right: 10px;
+  }
+
+  .img-prev {
+    width: 100%;
+    object-fit: cover;
   }
   input {
     width: 320px;
@@ -49,9 +56,7 @@ const Container = styled.div`
 `;
 
 const IconContainer = styled.div`
-  position: absolute;
-  bottom: 0%;
-  right: 25%;
+  margin: auto;
   width: 50%;
   display: flex;
   justify-content: center;
@@ -67,9 +72,16 @@ const IconContainer = styled.div`
     }
     p {
       font-size: 13px;
+      font-weight: 600;
       margin-left: 5px;
       text-align: center;
     }
+  }
+  input {
+    position: absolute;
+    z-index: -1;
+    height: 0.1px;
+    width: 0.1px;
   }
 `;
 
@@ -79,7 +91,9 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
 
   const [dataUser, setDataUser] = useState({});
   const [isDataLoading, setIsDataLoading] = useState(true);
-  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [picture, setPicture] = useState("init");
+  const [pictureUrl, setPictureUrl] = useState("vibe");
+  // const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
@@ -93,18 +107,33 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
       });
   }, []);
 
-  const sendPost = (event) => {
-    const enteredPost = postInputRef.current.value;
+  useEffect(() => {
+    console.log(picture);
+    if (picture === "init") {
+      return;
+    } else {
+      const newPictureUrl = URL.createObjectURL(picture);
+      console.log(newPictureUrl);
+      setPictureUrl(newPictureUrl);
+    }
+  }, [picture]);
 
-    event.preventDefault();
-    fetch("http://localhost:8000/api/posts", {
+  const sendPost = (e) => {
+    e.preventDefault();
+
+    const sendBody = {
+      userId: authCtx.userId,
+      message: postInputRef.current.value,
+    };
+    const dataForm = new FormData();
+    dataForm.append("post", JSON.stringify(sendBody));
+    dataForm.append("picture", picture);
+
+    fetch(`http://localhost:8000/api/posts`, {
       method: "POST",
-      body: JSON.stringify({
-        userId: authCtx.userId,
-        message: enteredPost,
-      }),
+      body: dataForm,
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${authCtx.token}`,
       },
     })
       .then((res) => {
@@ -122,50 +151,57 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
       })
       .then((res) => {
         setDataPosts([...dataPosts, res.data]);
+        setPictureUrl("vibe");
+        setPicture("init");
       })
       .catch((err) => {
         console.log(err);
       });
+
+    e.target.reset();
   };
   return isDataLoading ? (
     <div></div>
   ) : (
     <Container>
-      <img
-        src={dataUser.profilpic ? dataUser.profilpic : userIcon}
-        alt="icone utilisateur"
-      />
       <form onSubmit={sendPost}>
-        <input
-          type="text"
-          defaultValue={"What's up " + dataUser.firstname + "?"}
-          ref={postInputRef}
-        />
-        <button type="submit"> Envoyer</button>
-      </form>
-      <IconContainer>
-        <div
-          className="icon-div"
-          onClick={() => {
-            setIsPostModalOpen(true);
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faImage}
-            className="icon-image"
-          ></FontAwesomeIcon>
-          <p>Ajouter une image / un GIF</p>
+        <div className="top-container">
+          <img
+            className="img-profil"
+            src={dataUser.profilpic ? dataUser.profilpic : userIcon}
+            alt="icone utilisateur"
+          />
+          <div>
+            <input
+              type="text"
+              placeholder={"What's up " + dataUser.firstname + "?"}
+              ref={postInputRef}
+            />
+            <button type="submit"> Envoyer</button>
+          </div>
         </div>
-      </IconContainer>
-      {isPostModalOpen && (
-        <NewPostModal
-          profilpic={dataUser.profilpic ? dataUser.profilpic : userIcon}
-          dataUser={dataUser}
-          dataPosts={dataPosts}
-          setDataPosts={setDataPosts}
-          setIsPostModalOpen={setIsPostModalOpen}
-        />
-      )}
+        {pictureUrl !== "vibe" && (
+          <img className="img-prev" src={pictureUrl} alt="prévisualisation" />
+        )}
+        <IconContainer>
+          <label className="icon-div" htmlFor="picture">
+            <FontAwesomeIcon
+              icon={faImage}
+              className="icon-image"
+            ></FontAwesomeIcon>
+            <p>Photo/GIF</p>
+          </label>
+          <input
+            id="picture"
+            name="picture"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setPicture(e.target.files[0]);
+            }}
+          ></input>
+        </IconContainer>
+      </form>
     </Container>
   );
 };
