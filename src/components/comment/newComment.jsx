@@ -85,6 +85,7 @@ const NewComment = ({
       .catch((err) => {
         console.log(err);
       });
+    event.target.reset();
   };
 
   return (

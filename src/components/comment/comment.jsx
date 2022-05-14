@@ -25,7 +25,7 @@ const CommentModel = styled.div`
   }
   .commentcontainer{
       margin-left  14px;
-      width : 395px;
+      width : 85%;
       background-color : ${colors.secondaryDark};
       border-radius : 14px;
       font-size: 11px;

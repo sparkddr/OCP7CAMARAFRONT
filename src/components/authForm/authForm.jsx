@@ -67,7 +67,7 @@ const AuthForm = () => {
 
     //ADD VALIDATION
     setIsLoading(true);
-    if (haveAccount) {
+    const loginUser = () => {
       fetch("http://localhost:8000/api/login", {
         method: "POST",
         body: JSON.stringify({
@@ -98,6 +98,9 @@ const AuthForm = () => {
           navigate("/posts");
         })
         .catch((err) => {});
+    };
+    if (haveAccount) {
+      loginUser();
     } else {
       const enteredFirstName = firstNameInputRef.current.value;
       const enteredLastName = lastNameInputRef.current.value;
@@ -118,6 +121,7 @@ const AuthForm = () => {
       }).then((res) => {
         setIsLoading(false);
         if (res.ok) {
+          loginUser();
         } else {
           return res.json().then((data) => {
             let errorMessage = "La création de compte a échouée";

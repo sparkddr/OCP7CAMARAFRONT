@@ -108,7 +108,6 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
   }, []);
 
   useEffect(() => {
-    console.log(picture);
     if (picture === "init") {
       return;
     } else {

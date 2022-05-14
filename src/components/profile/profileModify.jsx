@@ -1,6 +1,8 @@
-import { useRef, useContext, useState } from "react";
+import { useRef, useContext, useState, useEffect } from "react";
 import AuthContext from "../../store/auth-context";
 import userIcon from "../../assets/user_icon_color.png";
+
+import DeleteAccountModal from "./deleteAccountModal";
 
 import colors from "../../utils/colors";
 
@@ -9,7 +11,6 @@ import styled from "styled-components";
 const Container = styled.div`
   position: absolute;
   width: 470px;
-  height: 470px;
   top: 50%;
   margin-top: -310px;
   right: 50%;
@@ -69,6 +70,11 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
   }
+  .delete-container {
+    width: 100%;
+    display: flex;
+    margin: 20px 0px;
+  }
 `;
 
 const ModifyPicture = styled.div`
@@ -117,11 +123,16 @@ const Button = styled.button`
   margin: 0 30px;
   &.annuler {
     background-color: ${colors.pink};
+    margin-bottom: 20px;
   }
   &.password-button {
     text-align: center;
     margin: 0 0 5px 0;
     height: 28px;
+  }
+  &#delete-account {
+    margin: auto;
+    background-color: red;
   }
 `;
 
@@ -148,9 +159,12 @@ const Label = styled.label`
 `;
 
 const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
+  const profilPic = userData.profilpic ? userData.profilpic : userIcon;
+
   const [modifyPassword, setModifyPassword] = useState(false);
   const [picture, setPicture] = useState();
-  // const [modifyPicture, setModifyPicture] = useState(false);
+  const [pictureUrl, setPictureUrl] = useState(profilPic);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const passwordInputRef = useRef();
   const lastnameInputRef = useRef();
@@ -158,8 +172,17 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
   const roleInputRef = useRef();
   const picInputRef = useRef();
 
-  // const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+    if (picture === undefined) {
+      return;
+    } else {
+      const newPictureUrl = URL.createObjectURL(picture);
+
+      setPictureUrl(newPictureUrl);
+    }
+  }, [picture]);
 
   const changeUser = (e) => {
     e.preventDefault();
@@ -211,10 +234,15 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
   return (
     <Container>
       <div>
-        <img
-          src={userData.profilpic ? userData.profilpic : userIcon}
-          alt="Profil"
-        />
+        {isDeleteModalOpen && (
+          <DeleteAccountModal
+            userId={authCtx.userId}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+          />
+        )}
+      </div>
+      <div>
+        <img src={pictureUrl} alt="Profil" />
         <ModifyPicture>
           <label className="label-picture" htmlFor="file">
             Modifier la photo de profil
@@ -232,21 +260,27 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
       <form onSubmit={changeUser}>
         <div className="label-input">
           <div className="label-container">
-            <Label>Nom :</Label>
-            <Label>Prénom :</Label>
-            <Label>Role :</Label>
-            <Label>Mot de passe : </Label>
+            <Label htmlFor="lastname">Nom :</Label>
+            <Label htmlFor="firstname">Prénom :</Label>
+            <Label htmlFor="role">Role :</Label>
+            <Label htmlFor="new-password">Mot de passe : </Label>
           </div>
           <div className="input-container">
             <Input
+              id="lastname"
               ref={lastnameInputRef}
               defaultValue={userData.lastname}
             ></Input>
             <Input
+              id="firstname"
               ref={firstnameInputRef}
               defaultValue={userData.firstname}
             ></Input>
-            <Input ref={roleInputRef} defaultValue={userData.role}></Input>
+            <Input
+              id="role"
+              ref={roleInputRef}
+              defaultValue={userData.role}
+            ></Input>
             {modifyPassword ? (
               <Input
                 type="password"
@@ -264,6 +298,17 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
               </Button>
             )}
           </div>
+        </div>
+        <div className="delete-container">
+          <Button
+            id="delete-account"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsDeleteModalOpen(true);
+            }}
+          >
+            Supprimer le compte
+          </Button>
         </div>
         <div className="validation">
           <Button type="submit">Valider les modifications</Button>

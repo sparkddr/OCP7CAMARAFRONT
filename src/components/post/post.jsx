@@ -4,10 +4,12 @@ import userIcon from "../../assets/user_icon_color.png";
 
 import { useContext, useState, useEffect } from "react";
 
-import heartEmpty from "../../assets/icons/heart-regular.svg";
-import heartFull from "../../assets/icons/heart-solid.svg";
 import ellipsis from "../../assets/icons/ellipsis-solid.svg";
 import AuthContext from "../../store/auth-context";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
 
 import CommentModule from "../comment/commentModule";
 import ModifyPost from "./modifyPost";
@@ -50,17 +52,22 @@ const UserDiv = styled.div`
 const BottomPost = styled.div`
   display: flex;
   justify-content: space-between;
-  div {
-    display: flex;
-    img {
-      cursor: pointer;
-    }
-    p {
-      margin-left: 10px;
-    }
-  }
   & .comments {
     cursor: pointer;
+  }
+`;
+
+const LikeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  .heart-icon {
+    font-size: 25px;
+    margin-right: 10px;
+    color: ${colors.pink};
+    cursor: pointer;
+  }
+  p {
+    font-weight: 500;
   }
 `;
 
@@ -301,14 +308,22 @@ const Post = ({
         </ImageContainer>
       )}
       <BottomPost>
-        <div>
+        <LikeContainer>
           {likeState ? (
-            <img src={heartFull} alt="like" onClick={likeDelete} />
+            <FontAwesomeIcon
+              className="heart-icon"
+              icon={faSolidHeart}
+              onClick={likeDelete}
+            />
           ) : (
-            <img src={heartEmpty} alt="like" onClick={likeHandler} />
+            <FontAwesomeIcon
+              className="heart-icon"
+              icon={faRegularHeart}
+              onClick={likeHandler}
+            />
           )}
           <p>{likeNum}</p>
-        </div>
+        </LikeContainer>
         {!isCommentLoading && (
           <p className="comments" onClick={handleComments}>
             {commentNumber} Commentaires
