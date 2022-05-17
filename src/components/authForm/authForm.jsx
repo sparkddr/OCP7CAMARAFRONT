@@ -97,7 +97,9 @@ const AuthForm = () => {
           authCtx.login(data.token, data.data.id, data.data.admin);
           navigate("/posts");
         })
-        .catch((err) => {});
+        .catch((err) => {
+          alert(err);
+        });
     };
     if (haveAccount) {
       loginUser();
@@ -149,35 +151,39 @@ const AuthForm = () => {
         </InputDiv>
         {!haveAccount && (
           <InputDiv>
-            <label>Nom</label>
-            <input ref={lastNameInputRef} />
+            <label htmlFor="lastname">Nom</label>
+            <input id="lastname" required ref={lastNameInputRef} />
           </InputDiv>
         )}
         {!haveAccount && (
           <InputDiv>
-            <label>Prénom</label>
-            <input ref={firstNameInputRef} />
+            <label htmlFor="firstname">Prénom</label>
+            <input id="firstname" required ref={firstNameInputRef} />
           </InputDiv>
         )}
         {!haveAccount && (
           <InputDiv>
-            <label>Role</label>
-            <input ref={roleInputRef} />
+            <label htmlFor="role">Role</label>
+            <input id="role" required ref={roleInputRef} />
           </InputDiv>
         )}
         <InputDiv>
-          <label>Mot de passe</label>
+          <label htmlFor="password">Mot de passe</label>
           <input
             type="password"
             id="password"
             required
+            autoComplete="currentPassword"
+            minlength="4"
             ref={passwordInputRef}
           />
         </InputDiv>
         {isLoading ? (
           <p>Demande en cours....</p>
         ) : (
-          <Submit>{haveAccount ? "Connexion" : "S'enregistrer"} </Submit>
+          <Submit type="submit">
+            {haveAccount ? "Connexion" : "S'enregistrer"}{" "}
+          </Submit>
         )}
       </form>
       <SwitchMod onClick={switchAuthMod}>
