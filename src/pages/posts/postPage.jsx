@@ -3,6 +3,7 @@ import NewPost from "../../components/post/newPost";
 import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import AuthContext from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled.div`
   margin: auto;
@@ -17,6 +18,7 @@ const PostOrder = styled.div`
 
 const PostPage = () => {
   const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [dataPosts, setDataPosts] = useState();
   const [isPostLoading, setIsPostLoading] = useState(true);
@@ -25,13 +27,22 @@ const PostPage = () => {
 
   useEffect(() => {
     const postCall = () => {
-      setIsPostLoading(true);
-      return fetch(urlPosts, {
+      fetch(urlPosts, {
         headers: {
           Authorization: `Bearer ${authCtx.token}`,
         },
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            navigate("/auth");
+            throw new Error(
+              "Le chargement a échoué, merci de vous reconnecter"
+            );
+          }
+        })
+
         .then(
           (result) => {
             setDataPosts(result.data);
@@ -42,19 +53,26 @@ const PostPage = () => {
           }
         );
     };
-    postCall();
+    if (authCtx.isLoggedIn) {
+      postCall();
+    } else {
+      navigate("/auth");
+    }
+    // authCtx.isLoggedIn ? postCall() : navigate("/auth");
   }, []);
 
   return (
     <StyledContainer>
-      <NewPost
-        dataPosts={dataPosts}
-        setDataPosts={setDataPosts}
-        isPostLoading={isPostLoading}
-        setIsPostLoading={setIsPostLoading}
-      />
+      {!isPostLoading && (
+        <NewPost
+          dataPosts={dataPosts}
+          setDataPosts={setDataPosts}
+          isPostLoading={isPostLoading}
+          setIsPostLoading={setIsPostLoading}
+        />
+      )}
       {isPostLoading ? (
-        <div>LOADIGN</div>
+        <div>LOADING</div>
       ) : (
         <PostOrder>
           {dataPosts.map((post, index) => (

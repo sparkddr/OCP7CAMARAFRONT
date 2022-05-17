@@ -51,6 +51,7 @@ const SignalCommentModal = ({ setIsSignalCommentModalOpen, commentId }) => {
         message: inputMessage.current.value,
       }),
       headers: {
+        Authorization: `Bearer ${authCtx.token}`,
         "Content-Type": "application/json",
       },
     })

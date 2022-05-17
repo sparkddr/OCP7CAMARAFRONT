@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import ellipsis from "../../assets/icons/ellipsis-solid.svg";
 
@@ -6,6 +6,8 @@ import userIcon from "../../assets/user_icon_color.png";
 import styled from "styled-components";
 
 import colors from "../../utils/colors";
+
+import AuthContext from "../../store/auth-context";
 
 import CommentModal from "./commentModal";
 import SignalCommentModal from "./signalCommentModal";
@@ -74,12 +76,17 @@ const Comment = ({
   const [dataUser, setDataUser] = useState();
   const [isLoading, setisLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const [isSignalCommentModalOpen, setIsSignalCommentModalOpen] =
     useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${user}`)
+    fetch(`http://localhost:8000/api/users/${user}`, {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setDataUser(data.data);

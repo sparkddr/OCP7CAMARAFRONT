@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
 import userIcon from "../../assets/user_icon_color.png";
 
 import styled from "styled-components";
 import colors from "../../utils/colors";
+import AuthContext from "../../store/auth-context";
 
 const Background = styled.div`
   background-color: ${colors.secondary};
@@ -83,6 +84,7 @@ const ModalModifyPost = ({
   setDataMessage,
 }) => {
   const postInputRef = useRef();
+  const authCtx = useContext(AuthContext);
 
   const modifyPost = (e) => {
     e.preventDefault();
@@ -95,6 +97,7 @@ const ModalModifyPost = ({
         message: enteredMessage,
       }),
       headers: {
+        Authorization: `Bearer ${authCtx.token}`,
         "Content-Type": "application/json",
       },
     }).then((res) => {
@@ -110,7 +113,12 @@ const ModalModifyPost = ({
       <Background>
         <img src={userIcon} alt="icone utilisateur" />
         <form onSubmit={modifyPost}>
-          <input type="text" defaultValue={dataMessage} ref={postInputRef} />
+          <input
+            type="text"
+            defaultValue={dataMessage}
+            ref={postInputRef}
+            required
+          />
           <div className="buttons">
             <button type="submit"> Envoyer</button>
             <button

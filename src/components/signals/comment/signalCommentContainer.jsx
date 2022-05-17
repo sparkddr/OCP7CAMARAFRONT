@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import SignalComment from "./signalComment";
 import colors from "../../../utils/colors";
+import AuthContext from "../../../store/auth-context";
 
 const CommentContainer = styled.div`
   width: 70%;
@@ -29,10 +30,15 @@ const CommentTab = styled.div`
 `;
 
 const SignalCommentsContainer = () => {
+  const authCtx = useContext(AuthContext);
   const [signalCommentData, setSignalCommentData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:8000/api/signal/comments")
+    fetch("http://localhost:8000/api/signal/comments", {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setSignalCommentData(data.data);

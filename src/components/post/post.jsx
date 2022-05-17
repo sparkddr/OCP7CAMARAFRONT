@@ -129,6 +129,7 @@ const Post = ({
       }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authCtx.token}`,
       },
     })
       .then((res) => {
@@ -175,7 +176,11 @@ const Post = ({
 
   useEffect(() => {
     const getComments = () => {
-      fetch(url)
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${authCtx.token}`,
+        },
+      })
         .then((res) => res.json())
         .then(
           (result) => {

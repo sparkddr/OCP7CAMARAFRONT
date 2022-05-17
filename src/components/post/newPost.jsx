@@ -96,7 +96,11 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
   // const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
+    fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setDataUser(data.data);
@@ -112,7 +116,6 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
       return;
     } else {
       const newPictureUrl = URL.createObjectURL(picture);
-      console.log(newPictureUrl);
       setPictureUrl(newPictureUrl);
     }
   }, [picture]);
@@ -174,6 +177,7 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
             <input
               type="text"
               placeholder={"What's up " + dataUser.firstname + "?"}
+              required
               ref={postInputRef}
             />
             <button type="submit"> Envoyer</button>

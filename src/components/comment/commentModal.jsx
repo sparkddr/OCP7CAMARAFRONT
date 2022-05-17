@@ -37,6 +37,7 @@ const CommentModal = ({
     console.log(dataComment);
     fetch(`http://localhost:8000/api/comments/${commentId}`, {
       method: "DELETE",
+      Authorization: `Bearer ${authCtx.token}`,
     })
       .then((res) => res.json())
       .then(() => {

@@ -19,7 +19,7 @@ root.render(
       <Router>
         <Header />
         <Routes>
-          <Route path="/posts" element={<PostPage />} />
+          <Route path="/" element={<PostPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/signals" element={<SignalPage />} />

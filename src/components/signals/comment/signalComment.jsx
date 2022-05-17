@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import ModalSeeComment from "../modalSeeComment";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
+import AuthContext from "../../../store/auth-context";
 
 const Signal = styled.div`
   display: grid;
@@ -42,10 +43,14 @@ const SignalComment = ({
   signalCommentData,
 }) => {
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const deleteSignal = () => {
     fetch(`http://localhost:8000/api/signal/comments/${signalId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -61,6 +66,9 @@ const SignalComment = ({
   const deleteComment = () => {
     fetch(`http://localhost:8000/api/comments/${comment.id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {

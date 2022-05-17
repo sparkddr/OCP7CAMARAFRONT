@@ -51,7 +51,11 @@ const NewComment = ({
   const [profilpic, setProfilPic] = useState(userIcon);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
+    fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         setProfilPic(res.data.profilpic);
@@ -74,10 +78,17 @@ const NewComment = ({
         message: enteredComment,
       }),
       headers: {
+        Authorization: `Bearer ${authCtx.token}`,
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("merci de réessayer");
+        }
+      })
       .then((data) => {
         setCommentNumber(commentNumber + 1);
         setDataComment([...dataComment, data.data]);
@@ -92,7 +103,7 @@ const NewComment = ({
     <NComment>
       <img src={profilpic} alt="icone utilisateur" />
       <form onSubmit={sendComment}>
-        <input type="text" ref={commentInputRef} />
+        <input type="text" required minLength="1" ref={commentInputRef} />
         <button type="submit"> Envoyer</button>
       </form>
     </NComment>

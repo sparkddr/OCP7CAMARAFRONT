@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import styled from "styled-components";
 import colors from "../../utils/colors";
+import AuthContext from "../../store/auth-context";
 
 const SignalContainer = styled.div`
   background-color: ${colors.secondaryDark};
@@ -34,6 +35,7 @@ const SignalContainer = styled.div`
 `;
 
 const SignalPostModal = ({ setIsSignalModalOpen, userId, postId }) => {
+  const authCtx = useContext(AuthContext);
   const inputMessage = useRef();
 
   const sendSignal = (e) => {
@@ -47,6 +49,7 @@ const SignalPostModal = ({ setIsSignalModalOpen, userId, postId }) => {
         message: inputMessage.current.value,
       }),
       headers: {
+        Authorization: `Bearer ${authCtx.token}`,
         "Content-Type": "application/json",
       },
     })

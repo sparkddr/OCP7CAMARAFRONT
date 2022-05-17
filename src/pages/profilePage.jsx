@@ -11,7 +11,11 @@ const ProfilePage = () => {
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${authCtx.userId}`)
+    fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setUserData(data.data);

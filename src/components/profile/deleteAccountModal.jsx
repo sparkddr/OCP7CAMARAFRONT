@@ -51,6 +51,9 @@ const DeleteAccountModal = ({ userId, setIsDeleteModalOpen }) => {
   const deleteAccount = () => {
     fetch(`http://localhost:8000/api/users/${userId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => {
         if (res.ok) {

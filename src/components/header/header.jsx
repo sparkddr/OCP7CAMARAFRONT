@@ -64,7 +64,7 @@ function Header() {
         )}
         {isLoggedIn && (
           <li>
-            <StyledLink to="/posts">Fil d'Actualité</StyledLink>
+            <StyledLink to="/">Fil d'Actualité</StyledLink>
           </li>
         )}
         {isLoggedIn && (

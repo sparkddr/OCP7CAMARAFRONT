@@ -95,7 +95,7 @@ const AuthForm = () => {
         })
         .then((data) => {
           authCtx.login(data.token, data.data.id, data.data.admin);
-          navigate("/posts");
+          navigate("/");
         })
         .catch((err) => {
           alert(err);
@@ -174,7 +174,7 @@ const AuthForm = () => {
             id="password"
             required
             autoComplete="currentPassword"
-            minlength="4"
+            minLength="4"
             ref={passwordInputRef}
           />
         </InputDiv>

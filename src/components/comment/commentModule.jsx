@@ -4,7 +4,6 @@ import colors from "../../utils/colors";
 
 import Comment from "./comment";
 import NewComment from "./newComment";
-import SignalCommentModal from "./signalCommentModal";
 
 const CommentContainer = styled.div`
   border-top: 1px solid ${colors.grey};

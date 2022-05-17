@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import AuthContext from "../../../store/auth-context";
 
 import SignalPost from "./signalPost";
 import colors from "../../../utils/colors";
@@ -31,10 +32,15 @@ const PostTab = styled.div`
 `;
 
 const SignalPostsContainer = () => {
+  const authCtx = useContext(AuthContext);
   const [signalPostData, setSignalPostData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:8000/api/signal/posts")
+    fetch("http://localhost:8000/api/signal/posts", {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setSignalPostData(data.data);

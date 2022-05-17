@@ -34,16 +34,21 @@ const ModifyPost = ({
   const deletePost = () => {
     fetch(`http://localhost:8000/api/posts/${postId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
         setDataPosts(dataPosts.filter((post) => post.id !== postId));
+        setModifyModal(false);
       });
   };
 
   const modifyHandler = (e) => {
     e.preventDefault();
     setModifyModalPage(true);
+    setModifyModal(false);
   };
 
   return (

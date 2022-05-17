@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ModalSeePost from "../modalSeePost";
-import { useState } from "react";
+import AuthContext from "../../../store/auth-context";
+import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,9 +43,13 @@ const SignalPost = ({
   signalPostData,
 }) => {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const deleteSignal = () => {
     fetch(`http://localhost:8000/api/signal/posts/${signalId}`, {
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -60,6 +65,9 @@ const SignalPost = ({
   const deletePost = () => {
     fetch(`http://localhost:8000/api/posts/${post.id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
