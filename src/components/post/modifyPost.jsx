@@ -40,7 +40,10 @@ const ModifyPost = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        setDataPosts(dataPosts.filter((post) => post.id !== postId));
+        console.log(dataPosts);
+        const newDataPost = dataPosts.filter((post) => post.id !== postId);
+        console.log(newDataPost);
+        setDataPosts(newDataPost);
         setModifyModal(false);
       });
   };

@@ -26,7 +26,7 @@ const PostPage = () => {
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [dataPosts, setDataPosts] = useState();
+  const [dataPosts, setDataPosts] = useState([]);
   const [isPostLoading, setIsPostLoading] = useState(true);
 
   const urlPosts = "http://localhost:8000/api/posts";
