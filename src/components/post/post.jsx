@@ -21,9 +21,15 @@ const PostContainer = styled.div`
   border-radius: 20px;
   margin-bottom: 40px;
   margin: 30px auto;
-  width: 100%;
+  width: 90%;
   padding: 15px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
   position: relative;
+  @media (min-width: 756px) {
+    width: 100%;
+    margin: 30px 0px;
+  }
 `;
 
 const UserDiv = styled.div`
@@ -73,8 +79,10 @@ const LikeContainer = styled.div`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 400px;
-  max-height: 400px;
+  height: 250px;
+  @media (min-width: 756px) {
+    height: 400px;
+  }
 
   img {
     width: 100%;
@@ -94,6 +102,7 @@ const Post = ({
   authUser,
   pictureUrl,
   className,
+  isSignalPostPage,
 }) => {
   const authCtx = useContext(AuthContext);
 
@@ -148,19 +157,23 @@ const Post = ({
       .then((data) => {
         setLikeState(true);
         setLikeId(data.data.id);
+        setLikeNum(likeNum + 1);
       })
       .catch((err) => {});
   };
   const likeDelete = () => {
     fetch(`http://localhost:8000/api/likes/${likeId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authCtx.token}`,
+      },
     })
       .then((res) => {
         if (res.ok) {
           return res.json();
         } else {
           return res.json().then((data) => {
-            let errorMessage = "L'envoi du like a échoué";
+            let errorMessage = "L'effacement du like a échoué";
             if (data && data.message) {
               errorMessage = data.message;
             }
@@ -170,6 +183,7 @@ const Post = ({
       })
       .then((data) => {
         setLikeState(false);
+        setLikeNum(likeNum - 1);
       })
       .catch((err) => {});
   };
@@ -244,7 +258,7 @@ const Post = ({
         );
     };
     getLikes();
-  });
+  }, []);
 
   const handleComments = () => {
     showComments ? setShowComments(false) : setShowComments(true);
@@ -288,12 +302,14 @@ const Post = ({
               Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
             </h3>
           </div>
-          <img
-            onClick={handleModifyModal}
-            className="ellipsis"
-            src={ellipsis}
-            alt="modification"
-          />
+          {!isSignalPostPage && (
+            <img
+              onClick={handleModifyModal}
+              className="ellipsis"
+              src={ellipsis}
+              alt="modification"
+            />
+          )}
         </UserDiv>
       )}
       {modifyModal && (

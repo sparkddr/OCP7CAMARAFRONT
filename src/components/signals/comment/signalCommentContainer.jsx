@@ -29,7 +29,7 @@ const CommentTab = styled.div`
   }
 `;
 
-const SignalCommentsContainer = () => {
+const SignalCommentsContainer = ({ isDesktop }) => {
   const authCtx = useContext(AuthContext);
   const [signalCommentData, setSignalCommentData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,11 +54,14 @@ const SignalCommentsContainer = () => {
           {signalCommentData.length > 0 && ` (${signalCommentData.length})`}
         </h2>
       </div>
-      <CommentTab>
-        <p className="item-a">Signalé par</p>
-        <p className="item-b">Commentaire</p>
-        <p className="item-c">Action</p>
-      </CommentTab>
+      {isDesktop && (
+        <CommentTab>
+          <p className="item-a">Signalé par</p>
+          <p className="item-b">Commentaire</p>
+          <p className="item-c">Action</p>
+        </CommentTab>
+      )}
+
       {!isLoading &&
         signalCommentData.map((signal, index) => {
           return (
@@ -70,6 +73,7 @@ const SignalCommentsContainer = () => {
               comment={signal.comment}
               setSignalCommentData={setSignalCommentData}
               signalCommentData={signalCommentData}
+              isDesktop={isDesktop}
             />
           );
         })}

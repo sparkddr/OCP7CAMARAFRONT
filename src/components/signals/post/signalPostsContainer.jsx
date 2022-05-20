@@ -31,7 +31,7 @@ const PostTab = styled.div`
   }
 `;
 
-const SignalPostsContainer = () => {
+const SignalPostsContainer = ({ isDesktop }) => {
   const authCtx = useContext(AuthContext);
   const [signalPostData, setSignalPostData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,14 +52,17 @@ const SignalPostsContainer = () => {
     <PostContainer>
       <div className="title">
         <h2 className="post-title">
-          POSTS {signalPostData > 0 && ` (${signalPostData.length})`}
+          POSTS {signalPostData.length > 0 && ` (${signalPostData.length})`}
         </h2>
       </div>
-      <PostTab>
-        <p className="item-a">Signalé par</p>
-        <p className="item-b">Commentaire</p>
-        <p className="item-c">Action</p>
-      </PostTab>
+      {isDesktop && (
+        <PostTab>
+          <p className="item-a">Signalé par</p>
+          <p className="item-b">Commentaire</p>
+          <p className="item-c">Action</p>
+        </PostTab>
+      )}
+
       {!isLoading &&
         signalPostData.map((signal, index) => {
           return (
@@ -72,6 +75,7 @@ const SignalPostsContainer = () => {
               post={signal.post}
               setSignalPostData={setSignalPostData}
               signalPostData={signalPostData}
+              isDesktop={isDesktop}
             />
           );
         })}

@@ -67,7 +67,7 @@ const SignalPostModal = ({ setIsSignalModalOpen, userId, postId }) => {
     <SignalContainer>
       <h2>Créer un signalement</h2>
       <form onSubmit={sendSignal}>
-        <label for="comment">
+        <label htmlFor="comment">
           Expliquez nous les raison qui vous ont poussées à signaler ce post
         </label>
         <textarea ref={inputMessage} id="comment" rows="5" />

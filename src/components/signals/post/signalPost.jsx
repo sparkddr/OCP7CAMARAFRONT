@@ -4,15 +4,33 @@ import AuthContext from "../../../store/auth-context";
 import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faCheck } from "@fortawesome/free-solid-svg-icons";
+import colors from "../../../utils/colors";
 
 const Signal = styled.div`
-  display: grid;
-  grid-template-columns: 0.5fr 2fr 1fr 2fr 1fr;
+  line-height: 10px;
+  width 90%;
+  margin : 20px auto;
+  @media (min-width: 756px) {
+    width : 100%;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 2fr 1fr;
+  }
+
+  .category-name {
+    font-weight: 700;
+  }
+
   .tab {
-    text-align: center;
+    @media (min-width: 756px) {
+      text-align: center;
+    }
+  }
+  .tab.index {
+    font-weight: 600;
   }
   .open-modal {
     cursor: pointer;
+    color: ${colors.primary};
     &:hover {
       text-decoration: underline;
     }
@@ -41,6 +59,7 @@ const SignalPost = ({
   post,
   setSignalPostData,
   signalPostData,
+  isDesktop,
 }) => {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const authCtx = useContext(AuthContext);
@@ -72,13 +91,13 @@ const SignalPost = ({
       .then((res) => res.json())
       .then((data) => {
         setSignalPostData(
-          signalPostData.filter((signal) => signal.id !== signalId)
+          signalPostData.filter((signal) => signal.postId !== data.data.id)
         );
       });
   };
   return (
     <Signal>
-      <p className="tab"># {signalId}</p>
+      <p className="tab index"># {signalId}</p>
       <p
         className="open-modal tab"
         onClick={() => {
@@ -87,10 +106,13 @@ const SignalPost = ({
       >
         Voir le post
       </p>
+      {!isDesktop && <p className="category-name">Signalé par :</p>}
       <p className="tab">
         {user.firstname} {user.lastname}
       </p>
+      {!isDesktop && <p className="category-name">Commentaire :</p>}
       <p className="tab">{message}</p>
+      {!isDesktop && <p className="category-name">Actions :</p>}
       <div className="tab icon-tab">
         <FontAwesomeIcon
           title="Effacer le post"

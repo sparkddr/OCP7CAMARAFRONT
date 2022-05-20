@@ -9,6 +9,7 @@ import colors from "../../utils/colors";
 import Post from "../post/post";
 
 const ModalContainer = styled.div`
+  line-height: 22px;
   .post-modal {
     position: fixed;
     top: 50%;
@@ -67,6 +68,7 @@ const ModalSeePost = ({ post, setIsPostModalOpen }) => {
           dataPost={dataPost}
           setDataPost={setDataPosts}
           authUser={authCtx.userId}
+          isSignalPostPage={true}
         />
       </div>
     </ModalContainer>

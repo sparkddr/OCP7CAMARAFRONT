@@ -7,7 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled.div`
   margin: auto;
-  width: 538px;
+  width: 90%;
+  display: flex;
+  padding: 1px;
+  flex-direction: column;
+  @media (min-width: 756px) {
+    width: 538px;
+  }
 `;
 
 const PostOrder = styled.div`

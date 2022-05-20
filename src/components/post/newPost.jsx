@@ -2,7 +2,7 @@ import { useRef, useContext, useEffect, useState } from "react";
 import AuthContext from "../../store/auth-context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faImages } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
 import colors from "../../utils/colors";
@@ -12,15 +12,22 @@ const Container = styled.div`
   background-color: ${colors.secondary};
   border-radius: 20px;
   margin-bottom: 40px;
-  margin: 30px 0px;
-  width: 100%;
+  margin: 30px auto;
+  width: 90%;
   padding: 20px 20px 10px 20px;
+  @media (min-width: 756px) {
+    width: 100%;
+    margin: 30px 0px;
+  }
 
   .top-container {
     display: flex;
     align-items: center;
     padding-bottom: 10px;
     border-bottom: 1px solid #d2d2d2;
+    & .input-container {
+      width: 100%;
+    }
   }
 
   .img-profil {
@@ -34,24 +41,38 @@ const Container = styled.div`
     object-fit: cover;
   }
   input {
-    width: 320px;
+    display: block;
+    width: 80%;
     height: 40px;
     border-radius: 47px;
     margin-left: 17px;
     background-color: ${colors.secondaryDark};
     padding-left: 20px;
     border: none;
+    @media (min-width: 756px) {
+      width: 320px;
+      display: inline-block;
+    }
   }
   button {
     all: unset;
-    margin-left: 20px;
+    display: block;
+    width: 150px;
+    margin: 15px auto;
     padding: 5px 8px;
     border-radius: 10px;
     background-color: #3b8ea5;
     color: white;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 16px;
     cursor: pointer;
+    text-align: center;
+    @media (min-width: 756px) {
+      display: inline-block;
+      margin: 0 0 0 20px;
+      width: auto;
+      font-size: 13px;
+    }
   }
 `;
 
@@ -94,6 +115,16 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
   const [picture, setPicture] = useState("init");
   const [pictureUrl, setPictureUrl] = useState("vibe");
   // const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 756);
+
+  const updateMedia = () => {
+    setDesktop(window.innerWidth > 756);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
@@ -173,19 +204,20 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
             src={dataUser.profilpic ? dataUser.profilpic : userIcon}
             alt="icone utilisateur"
           />
-          <div>
+          <div className="input-container">
             <input
               type="text"
               placeholder={"What's up " + dataUser.firstname + "?"}
               required
               ref={postInputRef}
             />
-            <button type="submit"> Envoyer</button>
+            {isDesktop && <button type="submit"> Envoyer</button>}
           </div>
         </div>
         {pictureUrl !== "vibe" && (
           <img className="img-prev" src={pictureUrl} alt="prévisualisation" />
         )}
+
         <IconContainer>
           <label className="icon-div" htmlFor="picture">
             <FontAwesomeIcon
@@ -204,6 +236,7 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
             }}
           ></input>
         </IconContainer>
+        {!isDesktop && <button type="submit"> Envoyer</button>}
       </form>
     </Container>
   );

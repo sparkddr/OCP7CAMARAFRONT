@@ -4,14 +4,19 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 
 const AuthContainer = styled.div`
-  width: 330px;
+  width: 90%;
   background-color: #2d728f;
   border-radius: 20px;
   margin: 30px auto 0px auto;
-  padding: 30px;
+  padding: 10px;
+
   text-align: center;
   color: white;
   font-family: "Open Sans";
+  @media (min-width: 756px) {
+    width: 330px;
+    padding: 30px;
+  }
 `;
 
 const InputDiv = styled.div`

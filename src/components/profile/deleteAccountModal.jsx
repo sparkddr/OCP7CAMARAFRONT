@@ -8,12 +8,13 @@ import React from "react";
 const ModalContainer = styled.div`
   &::after {
     position: fixed;
+    display: flex;
     content: "";
     background-color: black;
-    width: 100vw;
-    height: 100vh;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 1;
     opacity: 0.5;
   }
@@ -23,11 +24,16 @@ const Modal = styled.div`
   z-index: 3;
   background-color: ${colors.secondary};
   position: absolute;
-  width: 50vw;
+  width: 90vw;
   transform: translate(-50%, 50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 15px;
+  @media (min-width: 756px) {
+    width: 70vw;
+    padding: 0px;
+  }
   button {
     all: unset;
     height: 30px;

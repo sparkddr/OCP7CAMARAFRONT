@@ -9,17 +9,27 @@ import colors from "../../utils/colors";
 import styled from "styled-components";
 
 const Container = styled.div`
-  position: absolute;
-  width: 470px;
-  top: 50%;
-  margin-top: -310px;
-  right: 50%;
-  margin-right: -235px;
-  background-color: ${colors.secondary};
-  border-radius: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    border-radius: 15px;
+    background-color: ${colors.secondary};
+    @media (min-width: 756px) {
+      width: 470px;
+    }
+  }
+
   .picture-modify {
     position: absolute;
     font-size: 10px;
@@ -44,11 +54,16 @@ const Container = styled.div`
 
       .input-container {
         margin: auto;
-        margin-right: 40px;
+        @media (min-width: 756px) {
+          margin-right: 40px;
+        }
       }
       .label-container {
-        margin-left: 75px;
-        position: absolute;
+        margin-left: 10px;
+        @media (min-width: 756px) {
+          margin-left: 75px;
+          position: absolute;
+        }
       }
       div {
         display: flex;
@@ -120,7 +135,10 @@ const Button = styled.button`
   color: white;
   font-weight: bold;
   cursor: pointer;
-  margin: 0 30px;
+  margin: 0 10px;
+  @media (min-width: 756px) {
+    margin: 0 30px;
+  }
   &.annuler {
     background-color: ${colors.pink};
     margin-bottom: 20px;
@@ -233,95 +251,97 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
 
   return (
     <Container>
-      <div>
-        {isDeleteModalOpen && (
-          <DeleteAccountModal
-            userId={authCtx.userId}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-          />
-        )}
-      </div>
-      <div>
-        <img src={pictureUrl} alt="Profil" />
-        <ModifyPicture>
-          <label className="label-picture" htmlFor="file">
-            Modifier la photo de profil
-          </label>
-          <input
-            type="file"
-            name="file"
-            id="file"
-            accept="image/png, image/jpeg, image/gif"
-            onChange={(e) => setPicture(e.target.files[0])}
-            ref={picInputRef}
-          />
-        </ModifyPicture>
-      </div>
-      <form onSubmit={changeUser}>
-        <div className="label-input">
-          <div className="label-container">
-            <Label htmlFor="lastname">Nom :</Label>
-            <Label htmlFor="firstname">Prénom :</Label>
-            <Label htmlFor="role">Role :</Label>
-            <Label htmlFor="new-password">Mot de passe : </Label>
-          </div>
-          <div className="input-container">
-            <Input
-              id="lastname"
-              ref={lastnameInputRef}
-              defaultValue={userData.lastname}
-            ></Input>
-            <Input
-              id="firstname"
-              ref={firstnameInputRef}
-              defaultValue={userData.firstname}
-            ></Input>
-            <Input
-              id="role"
-              ref={roleInputRef}
-              defaultValue={userData.role}
-            ></Input>
-            {modifyPassword ? (
+      <div className="modal-content">
+        <div>
+          {isDeleteModalOpen && (
+            <DeleteAccountModal
+              userId={authCtx.userId}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
+            />
+          )}
+        </div>
+        <div>
+          <img src={pictureUrl} alt="Profil" />
+          <ModifyPicture>
+            <label className="label-picture" htmlFor="file">
+              Modifier la photo de profil
+            </label>
+            <input
+              type="file"
+              name="file"
+              id="file"
+              accept="image/png, image/jpeg, image/gif"
+              onChange={(e) => setPicture(e.target.files[0])}
+              ref={picInputRef}
+            />
+          </ModifyPicture>
+        </div>
+        <form onSubmit={changeUser}>
+          <div className="label-input">
+            <div className="label-container">
+              <Label htmlFor="lastname">Nom :</Label>
+              <Label htmlFor="firstname">Prénom :</Label>
+              <Label htmlFor="role">Role :</Label>
+              <Label htmlFor="new-password">Mot de passe : </Label>
+            </div>
+            <div className="input-container">
               <Input
-                type="password"
-                id="new-password"
-                ref={passwordInputRef}
+                id="lastname"
+                ref={lastnameInputRef}
+                defaultValue={userData.lastname}
               ></Input>
-            ) : (
-              <Button
-                className="password-button"
-                onClick={() => {
-                  setModifyPassword(true);
-                }}
-              >
-                Modifier mot de passe
-              </Button>
-            )}
+              <Input
+                id="firstname"
+                ref={firstnameInputRef}
+                defaultValue={userData.firstname}
+              ></Input>
+              <Input
+                id="role"
+                ref={roleInputRef}
+                defaultValue={userData.role}
+              ></Input>
+              {modifyPassword ? (
+                <Input
+                  type="password"
+                  id="new-password"
+                  ref={passwordInputRef}
+                ></Input>
+              ) : (
+                <Button
+                  className="password-button"
+                  onClick={() => {
+                    setModifyPassword(true);
+                  }}
+                >
+                  Modifier mot de passe
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="delete-container">
-          <Button
-            id="delete-account"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsDeleteModalOpen(true);
-            }}
-          >
-            Supprimer le compte
-          </Button>
-        </div>
-        <div className="validation">
-          <Button type="submit">Valider les modifications</Button>
-          <Button
-            className="annuler"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-          >
-            Annuler
-          </Button>
-        </div>
-      </form>
+          <div className="delete-container">
+            <Button
+              id="delete-account"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsDeleteModalOpen(true);
+              }}
+            >
+              Supprimer le compte
+            </Button>
+          </div>
+          <div className="validation">
+            <Button type="submit">Valider les modifications</Button>
+            <Button
+              className="annuler"
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+            >
+              Annuler
+            </Button>
+          </div>
+        </form>
+      </div>
     </Container>
   );
 };

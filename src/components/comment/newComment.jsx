@@ -9,6 +9,9 @@ import colors from "../../utils/colors";
 const NComment = styled.div`
   display: flex;
   align-items: center;
+  form {
+    width: 100%;
+  }
 
   img {
     width: 43px;
@@ -17,13 +20,18 @@ const NComment = styled.div`
     object-fit: contain;
   }
   input {
-    width: 320px;
-    height: 40px;
+    width: 60%;
+    height: 30px;
     border-radius: 47px;
     margin-left: 17px;
     background-color: ${colors.secondaryDark};
-    padding-left: 20px;
+    padding-left: 10px;
     border: none;
+    @media (min-width: 756px) {
+      width: 320px;
+      height: 40px;
+      padding-left: 20px;
+    }
   }
   button {
     margin-left: 5px;
