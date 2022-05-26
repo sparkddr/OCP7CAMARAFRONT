@@ -31,15 +31,16 @@ const CommentModel = styled.div`
       background-color : ${colors.secondaryDark};
       border-radius : 14px;
       font-size: 11px;
-      height : 54px;
+      min-height : 54px;
       position : relative;
-      h4, .message{
+      h4, .comment-message{
           margin : 0px 15px
       }
       h4{
           margin-top : 9px;
       }
-      .message{
+      .comment-message{
+        overflow-wrap : break-word;
           margin-bottom : 17px;
       }
       display : flex;
@@ -49,6 +50,7 @@ const CommentModel = styled.div`
         display:flex;
         flex-direction : column;
         justify-content :space-between;
+        max-width : 90%;
       }
 
       img{
@@ -118,7 +120,7 @@ const Comment = ({
             <h4>
               {dataUser.lastname} {dataUser.firstname}
             </h4>
-            <p className="message">{message}</p>
+            <p className="comment-message">{message}</p>
           </div>
           {isModalOpen && (
             <CommentModal

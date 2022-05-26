@@ -61,7 +61,7 @@ const Container = styled.div`
     margin: 15px auto;
     padding: 5px 8px;
     border-radius: 10px;
-    background-color: #3b8ea5;
+    background-color: ${colors.button};
     color: white;
     font-weight: bold;
     font-size: 16px;
@@ -206,8 +206,11 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
           />
           <div className="input-container">
             <input
+              title="newPost"
+              name="newPost"
               type="text"
               placeholder={"What's up " + dataUser.firstname + "?"}
+              id="newPost"
               required
               ref={postInputRef}
             />

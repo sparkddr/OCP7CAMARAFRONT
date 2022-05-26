@@ -25,13 +25,13 @@ const Hamburger = () => {
         id="menu"
       >
         <div id="menu-bar" className={menuChange ? "change" : ""}>
-          <div id="bar1" class="bar"></div>
-          <div id="bar2" class="bar"></div>
-          <div id="bar3" class="bar"></div>
+          <div id="bar1" className="bar"></div>
+          <div id="bar2" className="bar"></div>
+          <div id="bar3" className="bar"></div>
         </div>
-        <div class={`hamburger ${navChange ? "change" : ""}`} id="nav">
+        <div className={`hamburger ${navChange ? "change" : ""}`} id="nav">
           <ul>
-            {authCtx.isAdmin && (
+            {authCtx.admin && (
               <li>
                 <Link to="/signals">Signalements</Link>
               </li>
@@ -57,7 +57,7 @@ const Hamburger = () => {
         </div>
       </div>
       <div
-        class={`menu-bg ${menuBChange ? "change-bg" : ""}`}
+        className={`menu-bg ${menuBChange ? "change-bg" : ""}`}
         id="menu-bg"
       ></div>
     </div>

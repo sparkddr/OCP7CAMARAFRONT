@@ -15,7 +15,7 @@ const Background = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
 `;
 const Modal = styled.div`
   ::after {
@@ -40,9 +40,10 @@ const Modal = styled.div`
   flex-direction: column;
   justify-content: center;
   img {
-    height: 61px;
+    height: 90px;
     border-radius: 47px;
     margin-right: 10px;
+    margin-bottom: 30px;
   }
 
   form {
@@ -52,19 +53,21 @@ const Modal = styled.div`
     align-items: center;
     height: 200px;
   }
-  input {
+  textarea {
     width: 320px;
-    height: 40px;
-    border-radius: 47px;
+    padding: 20px;
+    font: inherit;
+    border-radius: 25px;
     background-color: ${colors.secondaryDark};
-    padding-left: 20px;
     border: none;
+    margin-bottom: 10px;
+    resize: none;
   }
   button {
     all: unset;
-    padding: 5px 8px;
+    padding: 5px 17px;
     border-radius: 10px;
-    background-color: #3b8ea5;
+    background-color: ${colors.button};
     color: white;
     font-weight: bold;
     font-size: 13px;
@@ -73,7 +76,10 @@ const Modal = styled.div`
     margin-right: 20px;
   }
   .annuler {
-    background-color: red;
+    color: ${colors.greyCancel};
+    font-weight: 600;
+    background-color: ${colors.secondary};
+    border: 1px solid ${colors.greyCancel};
   }
 `;
 
@@ -82,6 +88,7 @@ const ModalModifyPost = ({
   setModifyModalPage,
   dataMessage,
   setDataMessage,
+  pictureUrl,
 }) => {
   const postInputRef = useRef();
   const authCtx = useContext(AuthContext);
@@ -111,12 +118,14 @@ const ModalModifyPost = ({
   return (
     <Modal>
       <Background>
-        <img src={userIcon} alt="icone utilisateur" />
+        <img src={pictureUrl ? pictureUrl : userIcon} alt="icone utilisateur" />
         <form onSubmit={modifyPost}>
-          <input
-            type="text"
+          <textarea
+            rows="9"
+            cols="32"
             defaultValue={dataMessage}
             ref={postInputRef}
+            wrap="hard"
             required
           />
           <div className="buttons">

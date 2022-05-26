@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
+import colors from "../../utils/colors";
 
 const AuthContainer = styled.div`
   width: 90%;
@@ -40,7 +41,9 @@ const Submit = styled.button`
   width: 150px;
   height: 30px;
   border-radius: 10px;
-  background-color: #3b8ea5;
+  background-color: ${colors.primary};
+  filter: saturate(120%);
+  box-shadow: rgb(0 0 0 / 25%) 0px 1px 20px;
   color: white;
   font-weight: bold;
   cursor: pointer;

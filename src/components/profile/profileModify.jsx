@@ -140,7 +140,9 @@ const Button = styled.button`
     margin: 0 30px;
   }
   &.annuler {
-    background-color: ${colors.pink};
+    color: ${colors.greyCancel};
+    border: 1px solid ${colors.greyCancel};
+    background-color: ${colors.secondary};
     margin-bottom: 20px;
   }
   &.password-button {
@@ -150,7 +152,7 @@ const Button = styled.button`
   }
   &#delete-account {
     margin: auto;
-    background-color: red;
+    background-color: ${colors.red};
   }
 `;
 

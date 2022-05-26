@@ -10,7 +10,9 @@ const NComment = styled.div`
   display: flex;
   align-items: center;
   form {
-    width: 100%;
+    width: 90%;
+    display: flex;
+    align-items: center;
   }
 
   img {
@@ -19,17 +21,20 @@ const NComment = styled.div`
     border-radius: 29px;
     object-fit: contain;
   }
-  input {
-    width: 60%;
-    height: 30px;
-    border-radius: 47px;
+  textarea {
+    width: 70%;
+    resize: none;
+    height: 20px;
+    font: inherit;
+    font-size: 12px;
+    border-radius: 14px;
     margin-left: 17px;
     background-color: ${colors.secondaryDark};
-    padding-left: 10px;
+    padding: 10px 10px;
     border: none;
     @media (min-width: 756px) {
       width: 320px;
-      height: 40px;
+      height: 20px;
       padding-left: 20px;
     }
   }
@@ -111,7 +116,13 @@ const NewComment = ({
     <NComment>
       <img src={profilpic} alt="icone utilisateur" />
       <form onSubmit={sendComment}>
-        <input type="text" required minLength="1" ref={commentInputRef} />
+        <textarea
+          row="1"
+          type="text"
+          required
+          minLength="1"
+          ref={commentInputRef}
+        />
         <button type="submit"> Envoyer</button>
       </form>
     </NComment>

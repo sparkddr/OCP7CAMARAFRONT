@@ -104,7 +104,7 @@ function Header() {
           )}
         </StyledList>
       ) : (
-        <Hamburger />
+        isLoggedIn && <Hamburger />
       )}
     </StyledNav>
   );

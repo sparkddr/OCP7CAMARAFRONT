@@ -26,6 +26,9 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  .message-content {
+    overflow-wrap: break-word;
+  }
   @media (min-width: 756px) {
     width: 100%;
     margin: 30px 0px;
@@ -283,6 +286,7 @@ const Post = ({
           setModifyModalPage={setModifyModalPage}
           setDataMessage={setDataMessage}
           dataMessage={dataMessage}
+          pictureUrl={dataUser.profilpic}
         />
       )}
       {isUserLoading ? (
@@ -324,7 +328,7 @@ const Post = ({
           setIsSignalModalOpen={setIsSignalModalOpen}
         />
       )}
-      <p>{dataMessage}</p>
+      <p className="message-content">{dataMessage}</p>
       {pictureUrl && (
         <ImageContainer>
           <img src={pictureUrl} alt="Contenu du post" />

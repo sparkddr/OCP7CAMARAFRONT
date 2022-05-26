@@ -30,8 +30,11 @@ const SignalContainer = styled.div`
     border-radius: 15px;
     color: white;
     background-color: ${colors.primary};
+    font-weight: 600;
     &.cancel-button {
-      background-color: ${colors.pink};
+      background-color: ${colors.secondaryDark};
+      color: ${colors.greyCancel};
+      border: 1px solid ${colors.greyCancel};
     }
   }
 `;
