@@ -1,6 +1,6 @@
 # GROUPOMANIA
 
-Repo Front End of the Groupomania Social Network Project
+Repo Front End du réseau social interne de l'entreprise Groupomania
 
 ## Installation
 

@@ -263,6 +263,31 @@ const Post = ({
     getLikes();
   }, []);
 
+  function timeSince(date) {
+    let seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) {
+      return Math.floor(interval) + " années";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " mois";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " heures";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " secondes";
+  }
+
   const handleComments = () => {
     showComments ? setShowComments(false) : setShowComments(true);
   };
@@ -303,7 +328,8 @@ const Post = ({
               {dataUser.lastname} {dataUser.firstname}
             </h2>
             <h3>
-              Créé le {date.substr(0, 10)} à {date.substr(11, 5)}
+              Il y a {timeSince(date)}
+              {/* Créé le {date.substr(0, 10)} à {date.substr(11, 5)} */}
             </h3>
           </div>
           {!isSignalPostPage && (
