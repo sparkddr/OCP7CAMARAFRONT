@@ -267,7 +267,7 @@ const Post = ({
     let seconds = Math.floor((new Date() - new Date(date)) / 1000);
     let interval = seconds / 31536000;
     if (interval > 1) {
-      return Math.floor(interval) + " années";
+      return Math.floor(interval) + " ans";
     }
     interval = seconds / 2592000;
     if (interval > 1) {
@@ -275,7 +275,7 @@ const Post = ({
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + " days";
+      return Math.floor(interval) + " jours";
     }
     interval = seconds / 3600;
     if (interval > 1) {

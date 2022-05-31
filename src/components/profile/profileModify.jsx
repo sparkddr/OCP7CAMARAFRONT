@@ -9,6 +9,7 @@ import colors from "../../utils/colors";
 import styled from "styled-components";
 
 const Container = styled.div`
+  z-index: 3;
   position: fixed;
   top: 0;
   left: 0;
