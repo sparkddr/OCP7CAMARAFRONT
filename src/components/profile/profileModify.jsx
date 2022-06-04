@@ -95,34 +95,32 @@ const Container = styled.div`
 
 const ModifyPicture = styled.div`
   position: absolute;
-  top 10%;
-  right : 37.5%;
-  width : 25%;
+  top: 30%;
+  right: 37.5%;
+  width: 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 12px;
-  opacity:0;
-  &:hover{
-    opacity : 1;
+  opacity: 0;
+  &:hover {
+    opacity: 1;
   }
-  input{
+  input {
     width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
   }
-  label{
-    z-index : 2;
+  label {
+    z-index: 2;
     display: inline-block;
-    text-align : center;
-    padding : 3px;
-    border-radius : 15px;
-    background-color : ${colors.secondaryDark};
-    
-
+    text-align: center;
+    padding: 3px;
+    border-radius: 15px;
+    background-color: ${colors.secondaryDark};
   }
 `;
 
@@ -308,6 +306,7 @@ const ModifyProfile = ({ setIsModalOpen, userData, setUserData }) => {
                   type="password"
                   id="new-password"
                   ref={passwordInputRef}
+                  required
                 ></Input>
               ) : (
                 <Button

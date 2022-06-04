@@ -1,5 +1,6 @@
 import Post from "../../components/post/post";
 import NewPost from "../../components/post/newPost";
+import Loader from "../../components/utils/loader";
 import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import AuthContext from "../../store/auth-context";
@@ -64,26 +65,21 @@ const PostPage = () => {
     } else {
       navigate("/auth");
     }
-    // authCtx.isLoggedIn ? postCall() : navigate("/auth");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <StyledContainer>
       {!isPostLoading && (
-        <NewPost
-          dataPosts={dataPosts}
-          setDataPosts={setDataPosts}
-          isPostLoading={isPostLoading}
-          setIsPostLoading={setIsPostLoading}
-        />
+        <NewPost dataPosts={dataPosts} setDataPosts={setDataPosts} />
       )}
       {isPostLoading ? (
-        <div>LOADING</div>
+        <Loader />
       ) : (
         <PostOrder>
           {dataPosts.map((post, index) => (
             <Post
-              key={`${post.index}-${index}`}
+              key={`${post.id}-${index}`}
               message={post.message}
               userId={post.userId ? post.userId : 4}
               postId={post.id}

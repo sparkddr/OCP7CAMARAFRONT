@@ -1,5 +1,6 @@
 import { useRef, useContext, useEffect, useState } from "react";
 import AuthContext from "../../store/auth-context";
+import Loader from "../utils/loader";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
@@ -106,7 +107,7 @@ const IconContainer = styled.div`
   }
 `;
 
-const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
+const NewPost = ({ dataPosts, setDataPosts }) => {
   const postInputRef = useRef();
   const authCtx = useContext(AuthContext);
 
@@ -140,6 +141,7 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
       .catch((err) => {
         console.log(err);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -194,7 +196,7 @@ const NewPost = ({ dataPosts, setDataPosts, setIsPostLoading }) => {
     e.target.reset();
   };
   return isDataLoading ? (
-    <div></div>
+    <Loader />
   ) : (
     <Container>
       <form onSubmit={sendPost}>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import styled from "styled-components";
 import colors from "../../utils/colors";
@@ -40,9 +40,7 @@ const ModifyPost = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(dataPosts);
         const newDataPost = dataPosts.filter((post) => post.id !== postId);
-        console.log(newDataPost);
         setDataPosts(newDataPost);
         setModifyModal(false);
       });

@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
+import Loader from "../components/utils/loader";
+import { useNavigate } from "react-router-dom";
 
-import ModifyProfile from "../components/profile/profileModify";
 import ProfilHeader from "../components/profile/profileHeader";
 import Post from "../components/post/post";
 
@@ -13,7 +14,8 @@ const StyledContainer = styled.div`
   width: 90%;
   display: flex;
   padding: 1px;
-  flex-direction: column;
+  flex-direction: column-reverse;
+
   @media (min-width: 756px) {
     width: 538px;
   }
@@ -25,18 +27,27 @@ const ProfilePage = () => {
   const [postData, setPostData] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [isPostLoading, setIsPostLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
-      headers: {
-        Authorization: `Bearer ${authCtx.token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data.data);
-        setIsDataLoading(false);
-      });
+    const userCall = () => {
+      fetch(`http://localhost:8000/api/users/${authCtx.userId}`, {
+        headers: {
+          Authorization: `Bearer ${authCtx.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setUserData(data.data);
+          setIsDataLoading(false);
+        });
+    };
+    if (authCtx.isLoggedIn) {
+      userCall();
+    } else {
+      navigate("/auth");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -47,16 +58,14 @@ const ProfilePage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setPostData(data.data);
         setIsPostLoading(false);
-        console.log(postData);
-        console.log(isPostLoading);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return isDataLoading ? (
-    <div></div>
+    <Loader />
   ) : (
     <div>
       <ProfilHeader userData={userData} setUserData={setUserData} />
@@ -65,7 +74,7 @@ const ProfilePage = () => {
           {postData.map((post, index) => {
             return (
               <Post
-                key={`${post.index}-${index}`}
+                key={`${post.id}-${index}`}
                 message={post.message}
                 userId={post.userId ? post.userId : 4}
                 postId={post.id}

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "../../utils/colors";
 import userIcon from "../../assets/user_icon_color.png";
+import Loader from "../utils/loader";
 
 import { useContext, useState, useEffect } from "react";
 
@@ -211,6 +212,7 @@ const Post = ({
         );
     };
     getComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -232,6 +234,7 @@ const Post = ({
         );
     };
     getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -261,6 +264,7 @@ const Post = ({
         );
     };
     getLikes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function timeSince(date) {
@@ -315,7 +319,7 @@ const Post = ({
         />
       )}
       {isUserLoading ? (
-        <div></div>
+        <Loader />
       ) : (
         <UserDiv>
           <img

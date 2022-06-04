@@ -34,7 +34,6 @@ const CommentModal = ({
 }) => {
   const authCtx = useContext(AuthContext);
   const deleteComment = () => {
-    console.log(dataComment);
     fetch(`http://localhost:8000/api/comments/${commentId}`, {
       method: "DELETE",
       headers: {
