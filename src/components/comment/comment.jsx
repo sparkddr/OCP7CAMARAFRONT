@@ -94,6 +94,7 @@ const Comment = ({
         setDataUser(data.data);
         setisLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

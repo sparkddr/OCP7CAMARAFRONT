@@ -44,6 +44,7 @@ const SignalCommentsContainer = ({ isDesktop }) => {
         setSignalCommentData(data.data);
         setIsLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

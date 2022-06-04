@@ -33,6 +33,7 @@ const Container = styled.div`
 
   .img-profil {
     height: 61px;
+    width: 61px;
     border-radius: 47px;
     margin-right: 10px;
   }
